@@ -1,5 +1,5 @@
 {
-    "name": "subiabre/metro",
+    "name": "subiabre/phpmetro",
     "description": "Statistical and functional tests framework.",
     "type": "library",
     "license": "MIT",
