@@ -51,4 +51,21 @@ abstract class AbstractTest
 
         return $this;
     }
+
+    /**
+     * Create a new array with the length of the sample but the given value
+     * @param string $fill Value to be used to fill all the sample keys
+     * @return array
+     */
+    public function fillFromSample(?string $fill): array
+    {
+        $array = [];
+
+        foreach ($this->sample as $key => $sample)
+        {
+            $array[$key] = $fill;
+        }
+
+        return $array;
+    }
 }
