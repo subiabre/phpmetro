@@ -31,7 +31,7 @@ class ConsoleTest extends TestCase
         ]);
 
         $this->assertEquals(
-            "KEY: value",
+            "KEY: value\n",
             $output
         );
     }
