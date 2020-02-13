@@ -16,11 +16,12 @@ class ConsoleTest extends TestCase
 
     public function testConsoleTakesInputFromCLI()
     {
-        $input = $this->console->read('Please say something for the test:');
+        $this->console->write('Please say something for the test: ');
+        $input = $this->console->read();
 
         $this->assertEquals(
             $input,
-            $this->input
+            $this->console->input
         );
     }
 
