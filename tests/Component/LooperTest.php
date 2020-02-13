@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPMetro\Test\Component\Looper;
+namespace PHPMetro\Tests\Component\Looper;
 
 use PHPUnit\Framework\TestCase;
 use PHPMetro\Component\Looper;
