@@ -42,6 +42,34 @@ class AbstractTestTest extends TestCase
         );
     }
 
+    public function testFillFromSampleCreatesNewArray()
+    {
+        $this->test->addSamples(5, function(){
+            return "";
+        });
+
+        $fill = $this->test->fillFromSample(1);
+
+        $this->assertIsArray($fill);
+        $this->assertEquals(
+            \count($fill),
+            \count($this->test->sample)
+        );
+
+        foreach ($fill as $key => $value)
+        {
+            $this->assertEquals(
+                1,
+                $value
+            );
+        }
+
+        $this->assertEquals(
+            "",
+            $this->test->sample[0]
+        );
+    }
+
     public function testHasBasicProperties()
     {
         $this->assertClassHasAttribute('sample', \PHPMetro\AbstractTest::class);
