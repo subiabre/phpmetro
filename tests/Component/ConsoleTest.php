@@ -26,13 +26,13 @@ class ConsoleTest extends TestCase
 
     public function testConsoleTransformsArrayToString()
     {
-        $this->console->arrayToString([
+        $output = $this->console->arrayToString([
             'KEY' => 'value'
         ]);
 
         $this->assertEquals(
             "KEY: value",
-            $this->console->output
+            $output
         );
     }
 }
