@@ -1,0 +1,16 @@
+{
+    "name": "subiabre/metro",
+    "description": "Statistical and functional tests framework.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Facu",
+            "email": "subiabrewd@gmail.com"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^8.5"
+    }
+}
