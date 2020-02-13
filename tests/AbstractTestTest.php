@@ -25,6 +25,23 @@ class AbstractTestTest extends TestCase
         $this->assertIsObject($this->test->addSamples(0, function(){}));
     }
 
+    public function testAddSamplesPushesResultsToSampleArray()
+    {
+        $this->test->addSamples(5, function(){
+            return "";
+        });
+
+        $this->assertIsArray($this->test->sample);
+        $this->assertEquals(
+            5,
+            \count($this->test->sample)
+        );
+        $this->assertEquals(
+            "",
+            $this->test->sample[0]
+        );
+    }
+
     public function testHasBasicProperties()
     {
         $this->assertClassHasAttribute('sample', \PHPMetro\AbstractTest::class);
