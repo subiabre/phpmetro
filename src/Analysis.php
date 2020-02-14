@@ -3,15 +3,15 @@
 namespace PHPMetro;
 
 use PHPMetro\Component\Console;
-use PHPMetro\TestInterface;
+use PHPMetro\AnalysisInterface;
 
 /**
- * Abstract Test Case to start performing tests
+ * Abstract Analysis to start performing measures
  * @package PHPMetro
  * @author https://gitlab.com/subiabre
  * @license MIT
  */
-abstract class AbstractTest implements TestInterface
+abstract class Analysis implements AnalysisInterface
 {
     public
         $console,
