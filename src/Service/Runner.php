@@ -32,6 +32,8 @@ class Runner
     public function setRootLocation(string $root): self
     {
         $this->root = $root;
+
+        return $this;
     }
 
     /**
