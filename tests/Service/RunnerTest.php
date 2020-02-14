@@ -25,15 +25,15 @@ class RunnerTest extends TestCase
 
     public function testRunnerExpectsTests()
     {
-        $tests = $this->runner->getTests();
+        $this->expectException(\Exception::class);
 
-        $this->expectException(Exception::class);
+        $tests = $this->runner->getTests();
     }
 
     public function testRunnerExpectsConfigFile()
     {
         $config = $this->runner->getConfig();
 
-        $this->expectException(Exception::class);
+        $this->assertIsObject($config);
     }
 }
