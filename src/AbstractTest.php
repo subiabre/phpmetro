@@ -3,6 +3,7 @@
 namespace PHPMetro;
 
 use PHPMetro\Component\Console;
+use PHPMetro\TestInterface;
 
 /**
  * Abstract Test Case to start performing tests
@@ -10,7 +11,7 @@ use PHPMetro\Component\Console;
  * @author https://gitlab.com/subiabre
  * @license MIT
  */
-abstract class AbstractTest
+abstract class AbstractTest implements TestInterface
 {
     public
         $console,
@@ -18,54 +19,52 @@ abstract class AbstractTest
 
     public function __construct()
     {
-        if (\method_exists($this, 'setUp'))
-        {
-            $this->setUp();
-        }
-
         $this->console = new Console;
 
-        $this->run();
+        $this->setUp();
+        $this->runTests();
     }
 
     /**
-     * Override this method when running your test logic
+     * This method will run before your test, you'd want to prepare your samples here
      */
-    public function run(): void
+    public function setUp(): void
     {
 
     }
 
     /**
-     * Add results to the sample array
-     * @param int $iterations Number of iterations to perform
+     * Run all the tests
+     */
+    private function runTests(): void
+    {
+        $methods = \get_class_methods($this);
+
+        foreach ($methods as $method)
+        {
+            \preg_match('/test[_A-Za-z0-9]*[()]*/', $method, $tests);
+        }
+
+        foreach ($tests as $test)
+        {
+            $this->{$test}();
+        }
+    }
+
+    /**
+     * Add a new sample record
+     * @param string $name Name of this sample
+     * @param int $size Number of iterations to perform the function
      * @param callable $function Function to be performed on each iteration \
      * it's return value will be added to the sample
      * @return self
      */
-    public function addSamples(int $iterations, callable $function): self
+    public function addSample(string $name, int $size, callable $function): self
     {
-        for ($i=0; $i < $iterations; $i++) { 
-            $this->sample[] = $function();
+        for ($i=0; $i < $size; $i++) { 
+            $this->sample[$name][$i] = $function();
         }
 
         return $this;
-    }
-
-    /**
-     * Create a new array with the length of the sample but the given value
-     * @param string $fill Value to be used to fill all the sample keys
-     * @return array
-     */
-    public function fillFromSample(?string $fill): array
-    {
-        $array = [];
-
-        foreach ($this->sample as $key => $sample)
-        {
-            $array[$key] = $fill;
-        }
-
-        return $array;
     }
 }
