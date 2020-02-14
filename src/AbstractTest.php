@@ -39,16 +39,14 @@ abstract class AbstractTest implements TestInterface
     private function runTests(): void
     {
         $methods = \get_class_methods($this);
-
-        foreach ($methods as $method)
-        {
-            \preg_match('/test[_A-Za-z0-9]*[()]*/', $method, $tests);
-        }
-
+        $tests = \preg_grep('/test[_A-Za-z1-9]/', $methods);
+        
         foreach ($tests as $test)
         {
-            $this->{$test}();
+            $results[\substr($test, 4)] = $this->{$test}();
         }
+    
+        $this->console->write($this->console->arrayToString($results));
     }
 
     /**
