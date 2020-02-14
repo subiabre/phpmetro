@@ -59,10 +59,12 @@ abstract class AbstractTest implements TestInterface
      * it's return value will be added to the sample
      * @return self
      */
-    public function addSample(string $name, int $size, callable $function): self
+    public function addSample(string $name, ?int $size, callable $function): self
     {
-        for ($i=0; $i < $size; $i++) { 
-            $this->sample[$name][$i] = $function();
+        for ($i=0; $i < (int) $size; $i++) {
+            if ($function()) {
+                $this->sample[$name][$i] = $function();
+            }
         }
 
         return $this;
