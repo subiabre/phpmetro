@@ -3,15 +3,15 @@
 namespace PHPMetro\Tests;
 
 use PHPUnit\Framework\TestCase;
-use PHPMetro\AbstractTest;
+use PHPMetro\Analysis;
 
-class AbstractTestTest extends TestCase
+class AnalysisTest extends TestCase
 {
     public $test;
 
     public function setUp(): void
     {
-        $this->test = $this->getMockForAbstractClass('PHPMetro\AbstractTest');
+        $this->test = $this->getMockForAbstractClass('PHPMetro\Analysis');
     }
 
     public function testItHasTheInternalComponents()
@@ -49,6 +49,6 @@ class AbstractTestTest extends TestCase
     
     public function testHasBasicProperties()
     {
-        $this->assertClassHasAttribute('sample', \PHPMetro\AbstractTest::class);
+        $this->assertClassHasAttribute('sample', \PHPMetro\Analysis::class);
     }
 }
