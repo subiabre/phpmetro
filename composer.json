@@ -1,7 +1,7 @@
 {
     "name": "subiabre/phpmetro",
     "description": "Statistical analysis and testing for PHP projects.",
-    "version": "0.1",
+    "version": "0.2",
     "type": "library",
     "license": "MIT",
     "authors": [
