@@ -4,68 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "32ffa58f5a73cde020b830ea1ecb90b8",
-    "packages": [
-        {
-            "name": "amenadiel/jpgraph",
-            "version": "4.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/HuasoFoundries/jpgraph.git",
-                "reference": "1328d5a2cf0f1ce8f83b79f17d339b34241ace74"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/HuasoFoundries/jpgraph/zipball/1328d5a2cf0f1ce8f83b79f17d339b34241ace74",
-                "reference": "1328d5a2cf0f1ce8f83b79f17d339b34241ace74",
-                "shasum": ""
-            },
-            "require": {
-                "ext-gd": "*",
-                "php": ">=7.0.0"
-            },
-            "require-dev": {
-                "codeception/codeception": "^4.0",
-                "codeception/module-asserts": "^1.1",
-                "kint-php/kint": "^3.3",
-                "monolog/monolog": "^2.0",
-                "squizlabs/php_codesniffer": "^3.5",
-                "symfony/dotenv": "~4.2.0",
-                "symfony/event-dispatcher": "~4.2",
-                "symfony/yaml": "4.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Amenadiel\\JpGraph\\UnitTest\\": "tests",
-                    "Amenadiel\\JpGraph\\": "src/",
-                    "Amenadiel\\JpGraph\\Graph\\": "src/graph",
-                    "Amenadiel\\JpGraph\\Graph\\Scale\\": "src/graph/scale",
-                    "Amenadiel\\JpGraph\\Graph\\Tick\\": "src/graph/tick",
-                    "Amenadiel\\JpGraph\\Graph\\Axis\\": "src/graph/axis",
-                    "Amenadiel\\JpGraph\\Image\\": "src/image",
-                    "Amenadiel\\JpGraph\\Plot\\": "src/plot",
-                    "Amenadiel\\JpGraph\\Text\\": "src/text",
-                    "Amenadiel\\JpGraph\\Themes\\": "src/themes",
-                    "Amenadiel\\JpGraph\\Util\\": "src/util"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "QPL-1.0"
-            ],
-            "description": "jpGraph, library to make graphs and charts",
-            "homepage": "http://jpgraph.net/",
-            "keywords": [
-                "chart",
-                "data",
-                "graph",
-                "jpgraph",
-                "pie"
-            ],
-            "time": "2020-01-07T08:39:02+00:00"
-        }
-    ],
+    "content-hash": "5f9958e53203237d037745a3f2a0254d",
+    "packages": [],
     "packages-dev": [
         {
             "name": "doctrine/instantiator",
@@ -1538,16 +1478,16 @@
         },
         {
             "name": "webmozart/assert",
-            "version": "1.6.0",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webmozart/assert.git",
-                "reference": "573381c0a64f155a0d9a23f4b0c797194805b925"
+                "reference": "aed98a490f9a8f78468232db345ab9cf606cf598"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/573381c0a64f155a0d9a23f4b0c797194805b925",
-                "reference": "573381c0a64f155a0d9a23f4b0c797194805b925",
+                "url": "https://api.github.com/repos/webmozart/assert/zipball/aed98a490f9a8f78468232db345ab9cf606cf598",
+                "reference": "aed98a490f9a8f78468232db345ab9cf606cf598",
                 "shasum": ""
             },
             "require": {
@@ -1582,7 +1522,7 @@
                 "check",
                 "validate"
             ],
-            "time": "2019-11-24T13:36:37+00:00"
+            "time": "2020-02-14T12:15:55+00:00"
         }
     ],
     "aliases": [],
