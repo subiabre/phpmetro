@@ -40,10 +40,13 @@ abstract class AbstractTest implements TestInterface
     {
         $methods = \get_class_methods($this);
         $tests = \preg_grep('/test[_A-Za-z1-9]/', $methods);
+        $results = [];
         
         foreach ($tests as $test)
         {
-            $results[\substr($test, 4)] = $this->{$test}();
+            if (NULL !== $this->{$test}()) {
+                $results[\substr($test, 4)] = $this->{$test}();
+            }
         }
     
         $this->console->write($this->console->arrayToString($results));
@@ -60,7 +63,7 @@ abstract class AbstractTest implements TestInterface
     public function addSample(string $name, ?int $size, callable $function): self
     {
         for ($i=0; $i < (int) $size; $i++) {
-            if ($function()) {
+            if (NULL !== $function()) {
                 $this->sample[$name][$i] = $function();
             }
         }
