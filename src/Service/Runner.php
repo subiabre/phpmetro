@@ -104,7 +104,21 @@ class Runner
 
         if (\count($tests) > 0) return $tests;
 
-        throw new \Exception("The provided tests location for PHPMetro is empty.", 1);
-        
+        throw new \Exception("The provided tests location for PHPMetro is empty.", 1);   
+    }
+
+    /**
+     * Run the tests
+     */
+    public function run()
+    {
+        echo "PHPMetro by Facundo Subiabre\n";
+
+        foreach ($this->getTests() as $test)
+        {
+            include $test;
+
+            $do = new $test;
+        }
     }
 }
