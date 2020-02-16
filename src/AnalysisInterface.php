@@ -11,6 +11,5 @@ namespace PHPMetro;
 interface AnalysisInterface
 {
     public function setUp(): void;
-    public function setVerboseRunning(): void;
     public function runTests();
 }
