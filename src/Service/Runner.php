@@ -2,8 +2,11 @@
 
 namespace PHPMetro\Service;
 
+use PHPMetro\Component\Console;
+use PHPMetro\Component\Config;
+
 /**
- * Runner for PHPMetro analysis suites
+ * Runner service for PHPMetro
  * @package PHPMetro
  * @author https://gitlab.com/subiabre
  * @license MIT
@@ -11,114 +14,113 @@ namespace PHPMetro\Service;
 class Runner
 {
     private
-        $root,
-        $tests,
-        $testsLocation,
+        $console,
         $config,
-        $configLocation
+        $customs,
+
+        $tests
         ;
 
-    public function __construct($config = 'phpmetro.xml')
+    public function __construct()
     {
-        $this->configLocation = $this->root . $config;
-        $this->config = $this->getConfig();
-        
-        $this->setTestsLocation($this->config->location);
+        $this->console = new Console();
+        $this->config = new Config();
     }
 
     /**
-     * Set the root location, i.e: the location -2 at which the runner is
+     * Set custom console parameters
+     * @param array
      */
-    public function setRootLocation(string $root): self
+    public function customs(?array $params = NULL): void
     {
-        $this->root = $root;
-
-        return $this;
-    }
-
-    /**
-     * Set the location of the tests location
-     * @param string $location Location of the tests relative to root folder
-     * @return self
-     */
-    public function setTestsLocation(string $location): self
-    {
-        $path = \realpath($this->root . $location);
-        if ($path !== false && \is_dir($path))
+        if (\count($params) > 0)
         {
-            $this->testsLocation = $path;
-            
-            return $this;
+            $this->customs = $params;
         }
-
-        throw new \Exception("The provided tests location for PHPMetro does not exist.", 1);
     }
 
     /**
-     * Return the path to the PHPMetro tests folder
-     * @return string
-     */
-    public function getTestsLocation(): string
-    {
-        return $this->testsLocation;
-    }
-
-    /**
-     * Return the configuration from `phpmetro.xml` config file
+     * Obtain the configuration object
      * @return object
      */
     public function getConfig(): object
     {
-        if (\file_exists($this->configLocation))
-        {
-            return \simplexml_load_file($this->root . 'phpmetro.xml');
-        }
+        $location = NULL;
+        if ($this->customs['c']) $location = $this->customs['c'];
 
-        throw new \Exception("The required phpmetro.xml config file is not present.", 1);
+        return $this->config->getFromFile($location);
     }
 
     /**
-     * Return all the tests files for PHPMetro
+     * Set the location of the tests folder
+     * @param string $location
+     * @return void
+     */
+    public function setTestsLocation($location): void
+    {
+        if (\file_exists($location) && \is_dir($location))
+        {
+            $this->tests = $location;
+        }
+    }
+
+    /**
+     * Obtain the tests location if this was defined and exists
+     * @return string
+     */
+    public function getTestsLocation(): ?string
+    {
+        return $this->tests;
+    }
+
+    /**
+     * Obtain the analysis classes looking recursively through the analysis directory
+     * @param string $directory Location of the suite directory
      * @return array
      */
-    public function getTests(): array
+    public function getTests(string $directory): array
     {
-        $dir = $this->getTestsLocation();
-        $handle  = \opendir($dir);
-        $folders = [$dir];
+        $files = \glob($directory . '*.php');
         $tests = [];
 
-        while (($filename = \readdir($handle)) !== false) {
-            if ($filename != "." && $filename != ".." && \is_dir($dir . $filename))
-            {
-                \array_push($folders, $dir . $filename . "/");
-            }
-        }
-        
-        foreach ($folders as $dir) {
-            foreach (\glob($dir . '*.php') as $filename)
-            {
-                 \array_push($tests, $filename);
-            }
+        foreach ($files as $file)
+        { 
+            $tests[] = \basename($file);
         }
 
-        if (\count($tests) > 0) return $tests;
-
-        throw new \Exception("The provided tests location for PHPMetro is empty.", 1);   
+        return $tests;
     }
 
     /**
-     * Run the tests
+     * Start the runner routine
+     * @return void
      */
-    public function run()
+    public function run(): void
     {
-        echo "PHPMetro by Facundo Subiabre\n";
+        $xml = $this->getConfig();
+        $config = $xml->getConfig();
+        include $config['bootstrap'];
 
-        foreach ($this->getTests() as $test)
+        $this->console->write("PHPMetro by Facundo Subiabre.");
+
+        $suites = $xml->getSuites();
+        foreach ($suites as $name => $suite)
         {
-            include $test;
+            $this->console->write("Running {$name}");
 
-            $do = new $test;
+            $tests = $this->getTests($suite->directory);
+            foreach ($tests as $test)
+            {
+                $do = new $config['namespace'] . $test;
+
+                $do->setUp();
+
+                if ($config['verbose']) {
+                    $do->setVerboseRunning();
+                }
+
+                $do->runTests();
+            }
         }
     }
 }
