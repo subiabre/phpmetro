@@ -47,9 +47,7 @@ class ConfigTest extends TestCase
         $general = $config->getConfig();
         $generalKeys = [
             'bootstrap',
-            'colors',
             'namespace',
-            'profiler',
             'verbose'
         ];
 
