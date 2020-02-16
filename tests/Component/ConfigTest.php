@@ -46,9 +46,10 @@ class ConfigTest extends TestCase
         $config = $this->config->getFromFile();
         $general = $config->getConfig();
         $generalKeys = [
+            'bootstrap',
             'colors',
-            'printResults',
-            'useProfiler'
+            'profiler',
+            'verbose'
         ];
 
         $this->assertIsArray($general);
