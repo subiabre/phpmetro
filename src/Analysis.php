@@ -17,8 +17,6 @@ abstract class Analysis implements AnalysisInterface
         $console,
         $sample;
 
-    private $verbose = false;
-
     public function __construct()
     {
         $this->console = new Console;
@@ -33,31 +31,23 @@ abstract class Analysis implements AnalysisInterface
     }
 
     /**
-     * This will activate or deactivate the verbose flag, making tests print the results
-     */
-    public function setVerboseRunning(): void
-    {
-        $this->verbose = !$this->verbose;
-    }
-
-    /**
      * Run all the tests
      */
     public function runTests(): void
     {
         $methods = \get_class_methods($this);
         $tests = \preg_grep('/test[_A-Za-z1-9]/', $methods);
-        $results = [];
         
         foreach ($tests as $test)
         {
             if (NULL !== $this->{$test}()) {
-                $results[\substr($test, 4)] = $this->{$test}();
+                $testName = \substr($test, 4);
+                $result = $this->{$test}();
+
+                $this->console->write("\t\t{$testName}: {$result}" . PHP_EOL);
             }
         }
-    
-        if ($this->verbose) $this->console->write($this->console->arrayToString($results));
-        echo ".";
+        
     }
 
     /**
