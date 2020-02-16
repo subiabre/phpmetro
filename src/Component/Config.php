@@ -12,6 +12,8 @@ class Config
 {
     protected $filePath;
 
+    private $xml;
+
     /**
      * @param string $file Path to configuration file
      */
@@ -47,11 +49,46 @@ class Config
 
         if (\file_exists($file)) {
             $this->filePath = $file;
+            $this->xml = \simplexml_load_file($file);
 
-            return \simplexml_load_file($file);
+            return $this;
         }
 
         throw new \Exception("The required phpmetro config file is not present at the location '{$file}'.", 1);        
+    }
+
+    /**
+     * Obtain the general configuration labels as an array
+     * @return array
+     */
+    public function getConfig(): array
+    {
+        return $this->getXMLAttributes($this->xml);
+    }
+
+    /**
+     * Obtain the analysis suites in the config file as an array
+     * @return array
+     */
+    public function getSuites(): array
+    {
+        $suites = [];
+
+        foreach ($this->xml->analysis->suite as $suite)
+        {
+            $name = $this->getXMLAttributes($suite)['name'];
+
+            $suites[$name] = $suite;
+        }
+
+        return $suites;
+    }
+
+    private function getXMLAttributes($xml): array
+    {
+        $attributes = (array) $xml->attributes();
+
+        return $attributes['@attributes'];
     }
 
     /**
