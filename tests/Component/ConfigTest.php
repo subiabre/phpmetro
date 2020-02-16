@@ -30,7 +30,7 @@ class ConfigTests extends TestCase
         $config = $this->config->getFromFile('./phpmetro.xml');
 
         $this->assertIsObject($config);
-        $this->assertInstanceOf(\SimpleXMLElement::class, $config);
+        $this->assertInstanceOf(Config::class, $config);
     }
 
     public function testGetTriesDefaultLocation()
@@ -38,7 +38,37 @@ class ConfigTests extends TestCase
         $config = $this->config->getFromFile();
 
         $this->assertIsObject($config);
-        $this->assertInstanceOf(\SimpleXMLElement::class, $config);
+        $this->assertInstanceOf(\Config::class, $config);
+    }
+
+    public function testGetConfigReturnsGeneralConfig()
+    {
+        $config = $this->config->getFromFile();
+        $general = $config->getConfig();
+        $generalKeys = [
+            'colors',
+            'printResults',
+            'useProfiler'
+        ];
+
+        $this->assertIsArray($general);
+        foreach ($generalKeys as $key)
+        {
+            $this->assertArrayHasKey($key, $general);
+        }
+    }
+
+    public function testGetSuitesReturnsAnalysisSuites()
+    {
+        $config = $this->getFromFile();
+        $suites = $config->getSuites();
+
+        $this->assertIsArray($suites);
+        $this->assertIsObject($suite['Template Suite']);
+        $this->assertEquals(
+            'tests',
+            $suite['Template Suite']->directory
+        );
     }
 
     public function testGetThrowsExceptionOnMissingFile()
