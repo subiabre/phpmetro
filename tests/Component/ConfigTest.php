@@ -48,6 +48,7 @@ class ConfigTest extends TestCase
         $generalKeys = [
             'bootstrap',
             'colors',
+            'namespace',
             'profiler',
             'verbose'
         ];
@@ -65,10 +66,10 @@ class ConfigTest extends TestCase
         $suites = $config->getSuites();
 
         $this->assertIsArray($suites);
-        $this->assertIsObject($suites['Template Suite']);
+        $this->assertIsObject($suites['Example Suite']);
         $this->assertEquals(
-            'tests',
-            $suites['Template Suite']->directory
+            'tests/statistical/ExampleSuite',
+            $suites['Example Suite']->directory
         );
     }
 
