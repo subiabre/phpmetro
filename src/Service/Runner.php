@@ -76,19 +76,28 @@ class Runner
     /**
      * Obtain the analysis classes looking recursively through the analysis directory
      * @param string $directory Location of the suite directory
+     * @param string $namespace Namespace of the classes to be analysed
      * @return array
      */
-    public function getTests(string $directory): array
+    public function getTests(string $directory, string $namespace = ''): array
     {
-        $files = \glob($directory . '*.php');
-        $tests = [];
+        $dir = new \RecursiveDirectoryIterator($directory);
+        $ite = new \RecursiveIteratorIterator($dir);
+        $files = new \RegexIterator($ite, '/[A-Za-z]*\.php/', \RegexIterator::GET_MATCH);
+        $fileList = [];
 
-        foreach ($files as $file)
-        { 
-            $tests[] = \basename($file);
+        foreach ($files as $key => $file)
+        {
+            $classname = '\\' . \trim($namespace, '\\') . '\\';
+            $classname .= \str_replace('/', '\\', \ltrim(\rtrim($key, '.php'), $directory));
+
+            $fileList[] = [
+                'file' => $key,
+                'classname' => $classname
+            ];
         }
 
-        return $tests;
+        return $fileList;
     }
 
     /**
@@ -101,25 +110,52 @@ class Runner
         $config = $xml->getConfig();
         include $config['bootstrap'];
 
-        $this->console->write("PHPMetro by Facundo Subiabre.");
+        $this->console->write("PHPMetro by Facundo Subiabre.\n");
 
         $suites = $xml->getSuites();
         foreach ($suites as $name => $suite)
         {
-            $this->console->write("Running {$name}");
+            $this->console->write("Running {$name}." . PHP_EOL);
+            $this->console->write(PHP_EOL);
 
-            $tests = $this->getTests($suite->directory);
+            $tests = $this->getTests($suite->directory, $config['namespace']);
+
+            $start = \microtime(true);
             foreach ($tests as $test)
             {
-                $do = new $config['namespace'] . $test;
+                include $test['file'];
+
+                $do = new $test['classname']();
+
+                $analysis = \ltrim($test['classname'], $config['namespace']);
+                $this->console->write("\t{$analysis}: ");
 
                 $do->setUp();
+                if ($config['verbose'] === "true")
+                {
+                    $samples = \count($do->sample);
+                    $size = 0;
 
-                if ($config['verbose']) {
-                    $do->setVerboseRunning();
+                    foreach ($do->sample as $sample)
+                    {
+                        $size += \count($sample);
+                    }
+
+                    $this->console->write("{$samples} samples with {$size} records.");
                 }
+                $this->console->write(PHP_EOL);
 
                 $do->runTests();
+            }
+            $end = \microtime(true);
+            $time = \substr($end - $start, 0, 5);
+            $testsCount = \count($tests);
+
+            if ($config['verbose'] === "true")
+            {
+                $this->console->write(PHP_EOL);
+                $this->console->write("Performed {$testsCount} analysis in {$time} seconds.");
+                $this->console->write(PHP_EOL);
             }
         }
     }
