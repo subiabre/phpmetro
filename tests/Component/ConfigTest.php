@@ -64,10 +64,10 @@ class ConfigTest extends TestCase
         $suites = $config->getSuites();
 
         $this->assertIsArray($suites);
-        $this->assertIsObject($suite['Template Suite']);
+        $this->assertIsObject($suites['Template Suite']);
         $this->assertEquals(
             'tests',
-            $suite['Template Suite']->directory
+            $suites['Template Suite']->directory
         );
     }
 
