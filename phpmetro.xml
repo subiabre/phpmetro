@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpmetro>
-    <directory>tests</directory>
+<phpmetro
+    bootstrap="vendor/autoload.php"
+    colors="true"
+    namespace="App\Tests\Statistical"
+    verbose="true"
+    profiler="true"
+    >
+
+    <analysis>
+        <suite name="Example Suite">
+            <directory>tests/statistical/ExampleSuite</directory>
+        </suite>
+
+        <suite name="Other Suite">
+            <directory>tests/statistical/OtherSuite</directory>
+        </suite>
+    </analysis>
+
 </phpmetro>
