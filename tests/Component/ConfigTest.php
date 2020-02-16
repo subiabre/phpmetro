@@ -11,12 +11,31 @@ class ConfigTests extends TestCase
 
     public function setUp(): void
     {
-        $this->$config = new Config();
+        $this->config = new Config();
+    }
+
+    public function testSetsDefaultLocationOnEmptyConstructor()
+    {
+        $location = $this->config->getFilePath();
+
+        $this->assertIsString($location);
+        $this->assertEquals(
+            './phpmetro.xml',
+            $location
+        );
     }
 
     public function testGetFromFileReturnsObject()
     {
-        $config = $this->config->getFromFile(\dirname(__DIR__, 2) . '/phpmetro.xml');
+        $config = $this->config->getFromFile('./phpmetro.xml');
+
+        $this->assertIsObject($config);
+        $this->assertInstanceOf(\SimpleXMLElement::class, $config);
+    }
+
+    public function testGetTriesDefaultLocation()
+    {
+        $config = $this->config->getFromFile();
 
         $this->assertIsObject($config);
         $this->assertInstanceOf(\SimpleXMLElement::class, $config);
@@ -26,6 +45,6 @@ class ConfigTests extends TestCase
     {
         $this->expectException(\Exception::class);
 
-        $config = $this->config->getFromFile('phpmetro.xml');
+        $config = $this->config->getFromFile('missing.xml');
     }
 }
