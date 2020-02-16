@@ -54,7 +54,7 @@ class Config
             return $this;
         }
 
-        throw new \Exception("The required phpmetro config file is not present at the location '{$file}'.", 1);        
+        throw new \Exception("The required PHPMetro .xml config file is not present at the location '{$file}'.", 1);        
     }
 
     /**
