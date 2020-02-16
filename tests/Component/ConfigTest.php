@@ -5,7 +5,7 @@ namespace PHPMetro\Tests\Component;
 use PHPUnit\Framework\TestCase;
 use PHPMetro\Component\Config;
 
-class ConfigTests extends TestCase
+class ConfigTest extends TestCase
 {
     public $config;
 
@@ -38,7 +38,7 @@ class ConfigTests extends TestCase
         $config = $this->config->getFromFile();
 
         $this->assertIsObject($config);
-        $this->assertInstanceOf(\Config::class, $config);
+        $this->assertInstanceOf(Config::class, $config);
     }
 
     public function testGetConfigReturnsGeneralConfig()
@@ -60,7 +60,7 @@ class ConfigTests extends TestCase
 
     public function testGetSuitesReturnsAnalysisSuites()
     {
-        $config = $this->getFromFile();
+        $config = $this->config->getFromFile();
         $suites = $config->getSuites();
 
         $this->assertIsArray($suites);
