@@ -148,11 +148,12 @@ class Runner
                 $do->runTests();
             }
             $end = \microtime(true);
-            $time = \substr($end - $start, 0, 5);
-            $testsCount = \count($tests);
 
             if ($config['verbose'] === "true")
             {
+                $time = \substr($end - $start, 0, 5);
+                $testsCount = \count($tests);
+
                 $this->console->write(PHP_EOL);
                 $this->console->write("Performed {$testsCount} analysis in {$time} seconds.");
                 $this->console->write(PHP_EOL);
