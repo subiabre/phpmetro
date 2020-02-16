@@ -45,7 +45,11 @@ if (!defined('PHPMETRO_COMPOSER_INSTALL')) {
 // Require autoload
 require PHPMETRO_COMPOSER_INSTALL;
 
+// Allow custom config location
+$config = getopt('c::');
+
 // Run PHPMetro
 $phpmetro = new PHPMetro\Service\Runner();
-$phpmetro->setRootLocation(dirname(__DIR__, 2));
+$phpmetro->customs($config);
+
 $phpmetro->run();
