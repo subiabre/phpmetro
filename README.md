@@ -22,14 +22,29 @@ Say you have your own random number generator and you want to know the average n
 
 #### 0. Specify a PHPMetro suite
 
-Create a new `phpmetro.xml` file in the root folder of your project. This file will contain definitions for PHPMetro like test suites and configuration options. For now since PHPMetro is in a very early alpha it just defines the tests folder.
+Create a new `phpmetro.xml` file in the root folder of your project. This file will contain definitions for PHPMetro like test suites and configuration options.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<phpmetro>
-    <directory>tests/phpmetro</directory>
+<phpmetro
+    bootstrap="vendor/autoload.php"
+    namespace="MyApp\Tests\Analysis"
+    verbose="true"
+    >
+    <analysis>
+        <suite name="My First Analysis Suite">
+            <directory>tests/phpmetro</directory>
+        </suite>
+    </analysis>
 </phpmetro>
 ```
+The `phpmetro.xml` file defines general options for the PHPMetro runner. These options are all required to be present.
+
+**bootstrap** defines the class mapper for autoloading. Usually this will be your regular composer autoloader.
+**namespace** is the namespace you use for your analysis classes.
+**verbose** when set to `true` will make the runner display additional info about the analysis and performance of your PHPMetro suites.
+
+Suites are just groups of analysis that you wish to run. Your suites are nested under the **`<analysis>`** tag and must have a **name** attribute and have the **`<directory>`** tag where you specify the path to this suite relative to the root folder of your project.
 
 #### 1. Create a new Analysis
 
@@ -47,9 +62,9 @@ class RandomAnalysis extends Analysis
 }
 ```
 
-Congratulations, you'd just created your first PHPMetro Analysis. Extending from `Analysis` is the first step to create tests and perform analysis of our random number generator.
+Congratulations, you've just created your first PHPMetro Analysis. Extending from `PHPMetro\Analysis` is the first step to create tests and perform analysis of our random number generator.
 
-Now we need some results:
+Now we need some sample results to analyize:
 
 #### 2. Add samples
 
@@ -67,15 +82,15 @@ class RandomAnalysis extends Analysis
 }
 ```
 
-There we started our test and added a sample. ***Samples*** are just internal arrays that store several values. We generate them by calling `addSample`. This function takes a name, a sample size or length (that is the size of the array) and a function.
+There we started our test and added a 'Test' sample. *Samples* are just internal arrays that store several values. We generate them by calling `addSample`. This function takes a name, a sample size or length (that is the size of the array) and a function.
 
-This function will be called as many times as specified in the second parameter (100).
+The passed function will be called as many times as specified in the second parameter, 100 in our example.
 
 >The function passed will need to **return a value** in order to create a sample record. If it does not return any value, that iteration will be ignored from the record and our sample will not be of the specifed size.
 
-Samples are *ideally* added on `setUp`. This method will run first, however notice that this method will only run once and not before each test. Also notice, tests in PHPMetro aren't isolated nor need they to run isolated.
+Samples are ideally added on `setUp`. This method will run first, however notice that this method will only run once and not before each test. Also notice, tests in PHPMetro aren't isolated nor need they to run isolated.
 
-You can add samples on your tests, but it's recommended and expected that you add your samples here before performing any tests.
+You can add samples later on your tests, but it's recommended and expected that you add your samples here before performing any tests.
 
 #### 3. Analysing and performing tests on our sample
 
@@ -96,20 +111,26 @@ You can add samples on your tests, but it's recommended and expected that you ad
     }
 ```
 
-We've just performed our first analysis: calculated the average of our random generator. We did so by summing the values inside our **Test** sample and then dividing the length of the sample by the sum of it's values. Your classical average median.
+We've just performed our first analysis: we calculated the average of our random generator. We did so by summing the values inside our 'Test' sample and then dividing the length of the sample by the sum of it's values. Your classical median average.
 
-Once our calculations are perfomed we `return` the desired value.
+>Once our calculations are perfomed we must return the value we want to know. Tests that don't **return a value** will appear as empty when running our analysis.
 
 You can write as many tests as you want, methods names must follow the regex `test[_A-Za-z1-9]` to be run and need to return a value. Tests that don't return a value will be ignored.
 
->Notice that despite the `test` prefix, these methods don't really perform assertions nor return comprobations. What we actually do in our tests is **analysis of the data in the sample**.
+>Notice that despite the `test` prefix, these methods don't really perform assertions nor return comprobations. What we actually do in our tests is an *analysis* of the data in the sample.
 
-#### 4. Run the analysis
+#### 4. Run the analysis results
 
-After you've wrote all the tests you wanted you'd probably like to run them and see the results.
+After you've wrote all the tests you wanted you'd probably like to run them and see the results. On your console run:
 
 ```console
 $ ./vendor/bin/phpmetro
 ```
 
 And you should see your results on the screen. (This behaviour will likely be changed sooner than later)
+
+The binary to trigger the runner takes a custom .xml config file location, if your configuration is elsewhere simply run:
+
+```console
+$ ./vendor/bin/phpmetro -c 'tests/phpmetro/myconfig.xml'
+```
