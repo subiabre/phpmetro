@@ -16,6 +16,10 @@
     "bin": [
         "phpmetro"
     ],
+    "suggest": {
+        "markrogoyski/math-php": "Advanced mathematics with a simple API.",
+        "amenadiel/jpgraph": "Draw graphs for your tests using PHP."
+    },
     "autoload": {
         "psr-4": {
             "PHPMetro\\": "src/"
