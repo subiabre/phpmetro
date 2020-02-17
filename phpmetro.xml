@@ -1,15 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+    PHPMetro basic configuration file, *every attribute you see is required*
+    Use this file as a template for your PHPMetro uses
+
+    PHPMetro by Daniel Subiabre
+    https://gitlab.com/subiabre/phpmetro
+
+
+    Configuration attributes:
+    "bootstrap" defines your class mapper, usually the composer autoloader
+    "namespace" is the namespace you use for your PHPMetro analysis classes
+    "verbose" when set to `true` will make PHPMetro display additional run info
+-->
 <phpmetro
     bootstrap="vendor/autoload.php"
     namespace="App\Tests\Statistical"
     verbose="true"
     >
 
+    <!--Define here your analysis suites names and directory-->
     <analysis>
+        <!--Suites are a collection of analysis cases under the same directory-->
         <suite name="Example Suite">
             <directory>tests/statistical/ExampleSuite</directory>
         </suite>
 
+        <!--You can have as many suites as you want-->
         <suite name="Other Suite">
             <directory>tests/statistical/OtherSuite</directory>
         </suite>
