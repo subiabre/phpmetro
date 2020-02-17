@@ -1,136 +1,143 @@
 # PHPMetro
-Statistical analysis and testing for PHP.
+Sampling and analysis for PHP code.
 
-This package provides an easy, tested API to write code tests to measure statistical results.
+[![time tracker](https://wakatime.com/badge/gitlab/subiabre/phpmetro.svg)](https://wakatime.com/badge/gitlab/subiabre/phpmetro)
 
-## What does *statistical analysis* mean?
-I created this package because in a project I had to work at, I was required to not only do unit tests, but I had to also provide tests to statistically measure my code results. It was important to check that the code generated results under certain deviation and with certain success rates. I call this tests "statistical analysis tests".
+1. [About](#About)
+2. [Installation](#Installation)
+3. [Configuration](#Configuration)
+4. [Usage](#Usage)
 
-To avoid writing ugly, unmaintanable, untrustworthy tests, I created this simple package.
+## About
+PHPMetro is a library created to simplify the process of creating statistical analysis of PHP code.
+
+It does so using *Analysis* cases, *Samples* and *Tests*.
+
+In this library terms:
+1. an **Analysis** is a class that contains internal samples with a number of records and several tests that work on the samples.
+2. a **Sample** is an Analysis class internal array containing a collection of results from a given function. 
+3. a **Test** is an Analysis class method that performs calculations and analysis on the class Sample.
+
+PHPMetro allows developers to analize their code and perform tests on samples of their code results.
+
+>I created this package as an internal tool for a project I worked at in winter 2020. I was required to not only perform unit tests of my code, but to also create tests to check that my code generated results within certain statistics.
+Despite it's origin, it is not a perfect tool and it's suitability for production environments is not granted.
+**Contributors are highly welcome**.
 
 ## Installation
+PHPMetro is distributed using [composer](https://getcomposer.org).
 
 ```console
 $ composer require subiabre/phpmetro
 ```
 
-### Usage
+This way you'll get the `phpmetro` binary installed inside your vendor folder. This binary contains the code necessary to run all your tests from a single console command.
 
-PHPMetro simply provides a wrapper to create statistical analysis for code results.
+## Configuration
+To use the binary it's **required** to have a `phpmetro.xml` config file at the root of your project. This file will contain PHPMetro configuration and the project's analysis suites.
 
-Say you have your own random number generator and you want to know the average number and other measures:
-
-#### 0. Specify a PHPMetro suite
-
-Create a new `phpmetro.xml` file in the root folder of your project. This file will contain definitions for PHPMetro like test suites and configuration options.
+Check the example phpmetro.xml file in this repository to see and understand how it's structured.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
+<!--PHPMetro example .xml configuration file-->
 <phpmetro
     bootstrap="vendor/autoload.php"
-    namespace="MyApp\Tests\Analysis"
+    namespace="MyApp\Tests\Statistical"
     verbose="true"
     >
+
     <analysis>
-        <suite name="My First Analysis Suite">
-            <directory>tests/phpmetro</directory>
+        <suite name="PHPMetro">
+            <directory>tests/statistical</directory>
         </suite>
     </analysis>
+
 </phpmetro>
 ```
-The `phpmetro.xml` file defines general options for the PHPMetro runner. These options are all required to be present.
 
-**bootstrap** defines the class mapper for autoloading. Usually this will be your regular composer autoloader.
-**namespace** is the namespace you use for your analysis classes.
-**verbose** when set to `true` will make the runner display additional info about the analysis and performance of your PHPMetro suites.
+The attributes you see under the `phpmetro` tags are all required and they mean:
 
-Suites are just groups of analysis that you wish to run. Your suites are nested under the **`<analysis>`** tag and must have a **name** attribute and have the **`<directory>`** tag where you specify the path to this suite relative to the root folder of your project.
+1. **bootstrap** is the class mapper. Usually the composer autoloader.
+2. **namespace** is the analysis classes common namespace.
+3. **verbose** when set to `true` will tell the runner to display additional information about the running status.
 
-#### 1. Create a new Analysis
+## Usage
+Using PHPMetro will be fairly familiar for developers experienced on PHPUnit.
 
+To show how to use PHPMetro we will create an example analysis of an imaginary custom random generator: `MyApp\RandomNumber`.
+
+#### 1. Create an analysis by extending from `PHPMetro\Analysis`:
 ```php
 <?php
-# tests/phpmetro/RandomAnalysis.php
-namespace MyApp\Tests\Analysis;
+# tests/statistical/Random/RandomNumberAnalysis.php
+namespace MyApp\Tests\Statistical\Random;
 
 use PHPMetro\Analysis;
-use MyApp\Random;
+use MyApp\RandomNumber;
 
-class RandomAnalysis extends Analysis
+class RandomNumberAnalysis extends Analysis
 {
     ...
 }
+
 ```
+That's all it takes to start an analysis. PHPMetro will look through your analysis suite directory and automatically load all the classes inside when you run it.
 
-Congratulations, you've just created your first PHPMetro Analysis. Extending from `PHPMetro\Analysis` is the first step to create tests and perform analysis of our random number generator.
-
-Now we need some sample results to analyize:
+To create more analysis cases simply create a new class extending from `PHPMetro\Analysis`.
 
 #### 2. Add samples
+When instantiated by the runner, this will call the method `setUp` of your class. This method will run only once at the beggining of your analysis and before all the tests. Here is where you should be adding samples.
 
 ```php
-class RandomAnalysis extends Analysis
+public function setUp(): void
 {
-    public function setUp(): void
-    {
-        $this->addSample('Test', 100, function(){
-            $random = new Random();
+    $this->addSample('Results', 100, function(){
+        $random = new RandomNumber();
 
-            return $random->new();
-        });
+        return $random->new();
+    });
+}
+```
+To add samples to our analysis we call the `addSample` internal method. This method expects exactly 3 parameters:
+
+1. `$name`.
+2. `$size`.
+3. `$function`.
+
+When run, it will add a new array with the sample name as key to the internal samples array. This array will hold as many items as specified by the size, each containing the result of the passed in function.
+
+>It is recommended to **always return a value** in the passed function. Iterations of the function that don't return a value will be ignored, resulting in a sample of a different length than the specified.
+
+#### 3. Perform tests
+Now that there is a sample, it is now time to analize it. After running your analysis set-up, the runner will then call all the methods that match the regex `test[A-Za-z0-9]*`, this is any method that starts with `test`.
+
+```php
+public function testAverageResult()
+{
+    $total = 0;
+
+    foreach ($this->sample['Results'] as $key => $number) {
+        $total += $number;
     }
+
+    $average = $total / count($this->sample['Results']);
+
+    return $average;
 }
 ```
 
-There we started our test and added a 'Test' sample. *Samples* are just internal arrays that store several values. We generate them by calling `addSample`. This function takes a name, a sample size or length (that is the size of the array) and a function.
+When running, PHPMetro will create an array of your analysis tests and run them one by one, printing to your console screen their return value. If you don't return a value, your test will show up as empty.
 
-The passed function will be called as many times as specified in the second parameter, 100 in our example.
+For our test we just calculated the median average of the results by diving the sum of them between the total of them.
 
->The function passed will need to **return a value** in order to create a sample record. If it does not return any value, that iteration will be ignored from the record and our sample will not be of the specifed size.
+>PHPMetro does not include any internal tools to perform tests calculations, you can use your preferred libraries and code to do your analysis. PHPMetro only helps to create your analysis in a standarized way and run them all from console without it being a hustle.
+Check the suggested packages by PHPMetro to simplify mathematical operations and drawing charts.
 
-Samples are ideally added on `setUp`. This method will run first, however notice that this method will only run once and not before each test. Also notice, tests in PHPMetro aren't isolated nor need they to run isolated.
-
-You can add samples later on your tests, but it's recommended and expected that you add your samples here before performing any tests.
-
-#### 3. Analysing and performing tests on our sample
-
-```php
-    ...
-    public function testAverage()
-    {
-        $total = 0;
-
-        foreach ($this->sample['Test'] as $key => $value)
-        {
-            $total += $value;
-        }
-
-        $average = $total / count($this->sample['Test']);
-
-        return $average;
-    }
-```
-
-We've just performed our first analysis: we calculated the average of our random generator. We did so by summing the values inside our 'Test' sample and then dividing the length of the sample by the sum of it's values. Your classical median average.
-
->Once our calculations are perfomed we must return the value we want to know. Tests that don't **return a value** will appear as empty when running our analysis.
-
-You can write as many tests as you want, methods names must follow the regex `test[_A-Za-z1-9]` to be run and need to return a value. Tests that don't return a value will be ignored.
-
->Notice that despite the `test` prefix, these methods don't really perform assertions nor return comprobations. What we actually do in our tests is an *analysis* of the data in the sample.
-
-#### 4. Run the analysis results
-
-After you've wrote all the tests you wanted you'd probably like to run them and see the results. On your console run:
+#### 4. Run your suite
+To run the analysis, trigger the runner from the root of your project:
 
 ```console
 $ ./vendor/bin/phpmetro
 ```
-
-And you should see your results on the screen. (This behaviour will likely be changed sooner than later)
-
-The binary to trigger the runner takes a custom .xml config file location, if your configuration is elsewhere simply run:
-
-```console
-$ ./vendor/bin/phpmetro -c 'tests/phpmetro/myconfig.xml'
-```
+If you did everything right, you should see your results on your console screen popping one by one.
