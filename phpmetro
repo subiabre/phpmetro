@@ -22,12 +22,6 @@ foreach ($autoloads as $file) {
 
         break;
     }
-
-    if (file_exists($file . 'phpmetro.xml')) {
-        define('PHPMETRO_CONFIG_FILE', $file);
-
-        break;
-    }
 }
 
 unset($file);
@@ -46,32 +40,7 @@ if (!defined('PHPMETRO_COMPOSER_INSTALL')) {
 // Require autoload
 require PHPMETRO_COMPOSER_INSTALL;
 
-// Allow custom location
-if (!defined('PHPMETRO_CONFIG_FILE')) {
-    function PHPMetroConfig()
-    {
-        $console = new \PHPMetro\Component\Console();
-        
-        $console->write('Specify a PHPMetro .xml config file:' . PHP_EOL);
-        $file = $console->read();
-
-        if (file_exists($file)) {
-            define('PHPMETRO_CONFIG_FILE', $file);
-        }
-
-        else {
-            $console->write("The file at {$file} does not exist." . PHP_EOL);
-            PHPMetroConfig();
-        }
-    }
-
-    PHPMetroConfig();
-
-    unset(PHPMetroConfig());
-}
-
 // Run PHPMetro
 $phpmetro = new PHPMetro\Service\Runner();
-$phpmetro->setConfigLocation(PHPMETRO_CONFIG_FILE);
 
 $phpmetro->run();
