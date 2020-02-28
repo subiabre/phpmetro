@@ -16,7 +16,6 @@ class Runner
     private
         $console,
         $config,
-        $configLocation,
         $customs,
 
         $tests
@@ -41,24 +40,12 @@ class Runner
     }
 
     /**
-     * Set the .xml config file location
-     * @param string $location
-     */
-    public function setConfigLocation(string $location)
-    {
-        $this->configLocation = $location;
-    }
-
-    /**
      * Obtain the configuration object
      * @return object
      */
     public function getConfig(): object
     {
-        $location = $this->configLocation;
-        if ($this->customs['c']) $location = $this->customs['c'];
-
-        return $this->config->getFromFile($location);
+        return $this->config->getFromFile();
     }
 
     /**
