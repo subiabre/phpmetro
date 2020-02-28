@@ -83,7 +83,7 @@ class Runner
     {
         $dir = new \RecursiveDirectoryIterator($directory);
         $ite = new \RecursiveIteratorIterator($dir);
-        $files = new \RegexIterator($ite, '/[A-Za-z]*\.php/', \RegexIterator::GET_MATCH);
+        $files = new \RegexIterator($ite, '/[A-Za-z]*Analysis\.php/', \RegexIterator::GET_MATCH);
         $fileList = [];
 
         foreach ($files as $key => $file)
