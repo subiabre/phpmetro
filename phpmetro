@@ -11,18 +11,16 @@
 
 // Find autoload and config
 $autoloads = [
-        __DIR__ . "/../../",
-        __DIR__ . "/..\/",
-        __DIR__ . "/",
+        __DIR__ . "/../../vendor/autoload.php",
+        __DIR__ . "/../vendor/autoload.php",
+        __DIR__ . "/vendor/autoload.php",
     ];
 
 foreach ($autoloads as $file) {
-    if (file_exists($file . 'vendor/autoload.php')) {
+    if (file_exists($file)) {
         define('PHPMETRO_COMPOSER_INSTALL', $file);
-    }
 
-    if (file_exists($file . 'phpmetro.xml')) {
-        define('PHPMETRO_CONFIG_FILE', $file);
+        break;
     }
 }
 
@@ -39,21 +37,21 @@ if (!defined('PHPMETRO_COMPOSER_INSTALL')) {
     die(1);
 }
 
-if (!defined('PHPMETRO_CONFIG_FILE')) {
-    $defaut = file('vendor/subiabre/phpmetro/phpmetro.xml');
-
-    file_put_contents('phpmetro.xml', $default);
-
-    fwrite(
-        STDERR,
-        'A new phpmetro.xml file was created. Please review and update it before running PHPMetro again.' . PHP_EOL
-    );
-}
-
 // Require autoload
 require PHPMETRO_COMPOSER_INSTALL;
 
+// Copy config template
+if (!file_exists('/phpmetro.xml')) {
+    $console = new \PHPMetro\Component\Console();
+    $config = file('/vendor/subiabre/phpmetro/phpmetro.xml');
+
+    file_put_contents('/phpmetro.xml', $config);
+
+    $console->write("Copied phpmetro.xml tempalte configuration." . PHP_EOL);
+    $console->write("Please review and edit this file before running PHPMetro again.");
+    die;
+}
+
 // Run PHPMetro
 $phpmetro = new PHPMetro\Service\Runner();
-
 $phpmetro->run();
