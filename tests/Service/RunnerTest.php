@@ -30,6 +30,16 @@ class RunnerTest extends TestCase
         $this->assertIsArray($tests);
     }
 
+    public function testRunnerGetsAnalysisFiles()
+    {
+        $tests = $this->runner->getTests('./tests');
+
+        $this->assertIsArray($tests);
+
+        // There are no Analysis of PHPMetro
+        $this->assertEquals(0, \count($tests));
+    }
+
     public function testRunnerExpectsConfigFile()
     {
         $config = $this->runner->getConfig();
