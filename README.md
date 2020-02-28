@@ -31,7 +31,7 @@ PHPMetro is distributed using [composer](https://getcomposer.org).
 $ composer require subiabre/phpmetro
 ```
 
-This way you'll get the `phpmetro` binary installed inside your vendor folder. This binary contains the code necessary to run all your tests from a single console command. You'll also get an example `phpmetro.xml` configuration file.
+This way you'll get the `phpmetro` binary installed inside your vendor folder. This binary contains the code necessary to run all your tests from a single console command.
 
 ## Configuration
 To use the binary it's **required** to have a `phpmetro.xml` config file at the root of your project. This file will contain PHPMetro configuration and the project's analysis suites.
