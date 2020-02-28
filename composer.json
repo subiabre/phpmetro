@@ -29,5 +29,10 @@
         "psr-4": {
             "PHPMetro\\Tests\\": "tests/"
         }
+    },
+    "scripts": {
+        "post-package-install": [
+            "cp ./vendor/subiabre/phpmetro/phpmetro.xml phpmetro.xml"
+        ]
     }
 }
