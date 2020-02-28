@@ -85,7 +85,7 @@ class Runner
 
         foreach ($files as $key => $file)
         {
-            $classname = '\\' . \trim($namespace, '\\') . '\\';
+            $classname = '\\' . \trim($namespace, '\\');
             $classname .= \str_replace('/', '\\', \ltrim(\rtrim($key, '.php'), $directory));
 
             $fileList[] = [
