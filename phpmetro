@@ -9,21 +9,22 @@
  * @see https://gitlab.com/subiabre/phpmetro
  */
 
-/**
- * Root location from the runner location at `/vendor/bin`
- */
-define('PHPMETRO_ROOT_LOCATION', dirname(__DIR__, 2));
-
-// Find autoload
+// Find autoload and config
 $autoloads = [
-        __DIR__ . '/../../autoload.php',
-        __DIR__ . '/../vendor/autoload.php',
-        __DIR__ . '/vendor/autoload.php',
+        __DIR__ . "/../../",
+        __DIR__ . "/..\/",
+        __DIR__ . "/",
     ];
 
 foreach ($autoloads as $file) {
-    if (file_exists($file)) {
+    if (file_exists($file . 'vendor/autoload.php')) {
         define('PHPMETRO_COMPOSER_INSTALL', $file);
+
+        break;
+    }
+
+    if (file_exists($file . 'phpmetro.xml')) {
+        define('PHPMETRO_CONFIG_FILE', $file);
 
         break;
     }
@@ -45,11 +46,32 @@ if (!defined('PHPMETRO_COMPOSER_INSTALL')) {
 // Require autoload
 require PHPMETRO_COMPOSER_INSTALL;
 
-// Allow custom config location
-$config = getopt('c::');
+// Allow custom location
+if (!defined('PHPMETRO_CONFIG_FILE')) {
+    function PHPMetroConfig()
+    {
+        $console = new \PHPMetro\Component\Console();
+        
+        $console->write('Specify a PHPMetro .xml config file:' . PHP_EOL);
+        $file = $console->read();
+
+        if (file_exists($file)) {
+            define('PHPMETRO_CONFIG_FILE', $file);
+        }
+
+        else {
+            $console->write("The file at {$file} does not exist." . PHP_EOL);
+            PHPMetroConfig();
+        }
+    }
+
+    PHPMetroConfig();
+
+    unset(PHPMetroConfig());
+}
 
 // Run PHPMetro
 $phpmetro = new PHPMetro\Service\Runner();
-$phpmetro->customs($config);
+$phpmetro->setConfigLocation(PHPMETRO_CONFIG_FILE);
 
 $phpmetro->run();
