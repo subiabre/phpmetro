@@ -34,7 +34,7 @@ $ composer require subiabre/phpmetro
 This way you'll get the `phpmetro` binary installed inside your vendor folder. This binary contains the code necessary to run all your tests from a single console command.
 
 ## Configuration
-To use the binary it's **required** to have a `phpmetro.xml` config file at the root of your project. This file will contain PHPMetro configuration and the project's analysis suites.
+To use the binary it's **required** to have a `phpmetro.xml` config file at the root of your project. This file will contain PHPMetro configuration and the project's analysis suites. If you run the binary without the config file, it will copy the template one for you.
 
 Check the example phpmetro.xml file in this repository to see and understand how it's structured.
 
