@@ -19,8 +19,10 @@ $autoloads = [
 foreach ($autoloads as $file) {
     if (file_exists($file . 'vendor/autoload.php')) {
         define('PHPMETRO_COMPOSER_INSTALL', $file);
+    }
 
-        break;
+    if (file_exists($file . 'phpmetro.xml')) {
+        define('PHPMETRO_CONFIG_FILE', $file);
     }
 }
 
@@ -35,6 +37,17 @@ if (!defined('PHPMETRO_COMPOSER_INSTALL')) {
     );
 
     die(1);
+}
+
+if (!defined('PHPMETRO_CONFIG_FILE')) {
+    $defaut = file('vendor/subiabre/phpmetro/phpmetro.xml');
+
+    file_put_contents('phpmetro.xml', $default);
+
+    fwrite(
+        STDERR,
+        'A new phpmetro.xml file was created. Please review and update it before running PHPMetro again.' . PHP_EOL
+    );
 }
 
 // Require autoload
