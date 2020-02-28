@@ -48,16 +48,16 @@ $phpmetro = new PHPMetro\Service\Runner();
 
 try {
     $phpmetro->run();
+} catch (MissingConfigException $e) {
+    $console = new Console();
+    $config = file(dirname(PHPMETRO_COMPOSER_INSTALL) . '/subiabre/phpmetro/phpmetro.xml');
+    
+    file_put_contents('phpmetro.xml', $config);
+
+    $console->write("Copied template phpmetro.xml config file to root folder." . PHP_EOL);
+    $console->write("Please review and edit this file." . PHP_EOL);
 } catch (Exception $error) {
     $console = new Console();
 
     $console->write($error->getMessage() . PHP_EOL);
-} catch (MissingConfigException $e) {
-    $console = new Console();
-    $config = file(dirname(PHPMETRO_COMPOSER_INSTALL) . '/subiabre/phpmetro/phpmetro.xml');
-
-    file_put_contents(dirname(PHPMETRO_COMPOSER_INSTALL, 1) . '/phpmetro.xml', $config);
-
-    $console->write("Copied template phpmetro.xml config file to root folder." . PHP_EOL);
-    $console->write("Please review and edit this file.");
 }
