@@ -31,7 +31,7 @@ PHPMetro is distributed using [composer](https://getcomposer.org).
 $ composer require subiabre/phpmetro
 ```
 
-This way you'll get the `phpmetro` binary installed inside your vendor folder. This binary contains the code necessary to run all your tests from a single console command.
+This way you'll get the `phpmetro` binary installed inside your vendor folder. This binary contains the code necessary to run all your tests from a single console command. You'll also get an example `phpmetro.xml` configuration file.
 
 ## Configuration
 To use the binary it's **required** to have a `phpmetro.xml` config file at the root of your project. This file will contain PHPMetro configuration and the project's analysis suites.
@@ -43,13 +43,13 @@ Check the example phpmetro.xml file in this repository to see and understand how
 <!--PHPMetro example .xml configuration file-->
 <phpmetro
     bootstrap="vendor/autoload.php"
-    namespace="MyApp\Tests\Statistical"
+    namespace="MyApp\Tests"
     verbose="true"
     >
 
     <analysis>
         <suite name="PHPMetro">
-            <directory>tests/statistical</directory>
+            <directory>tests</directory>
         </suite>
     </analysis>
 
@@ -70,8 +70,8 @@ To show how to use PHPMetro we will create an example analysis of an imaginary c
 #### 1. Create an analysis by extending from `PHPMetro\Analysis`:
 ```php
 <?php
-# tests/statistical/Random/RandomNumberAnalysis.php
-namespace MyApp\Tests\Statistical\Random;
+# tests/Random/RandomNumberAnalysis.php
+namespace MyApp\Tests\Random;
 
 use PHPMetro\Analysis;
 use MyApp\RandomNumber;
@@ -82,7 +82,7 @@ class RandomNumberAnalysis extends Analysis
 }
 
 ```
-That's all it takes to start an analysis. PHPMetro will look through your analysis suite directory and automatically load all the classes inside when you run it.
+That's all it takes to start an analysis. PHPMetro will look through your analysis suite directory and automatically load all the analysis classes inside when you run it. Files **must end with `...Analysis.php`** to be recognized by PHPMetro.
 
 To create more analysis cases simply create a new class extending from `PHPMetro\Analysis`.
 
