@@ -12,5 +12,11 @@
             "email": "subiabrewd@gmail.com"
         }
     ],
-    "require": {}
+    "require": {},
+    "autoload": {
+        "psr-4": { "PHPMetro\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "PHPMetro\\Tests\\": "tests/" }
+    }
 }
