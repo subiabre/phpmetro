@@ -1,0 +1,16 @@
+{
+    "name": "subiabre/phpmetro",
+    "description": "Statistical analysis for PHP code",
+    "type": "library",
+    "require-dev": {
+        "phpunit/phpunit": "^8.5"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Facu",
+            "email": "subiabrewd@gmail.com"
+        }
+    ],
+    "require": {}
+}
