@@ -2,21 +2,32 @@
     "name": "subiabre/phpmetro",
     "description": "Statistical analysis for PHP code",
     "type": "library",
-    "require-dev": {
-        "phpunit/phpunit": "^8.5"
-    },
     "license": "MIT",
     "authors": [
         {
-            "name": "Facu",
-            "email": "subiabrewd@gmail.com"
+            "name": "Facundo Subiabre",
+            "email": "subiabrewd@gmail.com",
+            "role": "Lead"
         }
     ],
+    "support": {
+        "email": "subiabrewd@gmail.com"
+    },
     "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^8.5"
+    },
+    "suggest": {
+        "markrogoyski/math-php": "Comprehensive math library to perform calculations with a simple API.",
+        "amenadiel/jpgraph": "Allows developers to create and draw graphs."
+    },
     "autoload": {
         "psr-4": { "PHPMetro\\": "src/" }
     },
     "autoload-dev": {
         "psr-4": { "PHPMetro\\Tests\\": "tests/" }
-    }
+    },
+    "bin": [
+        "bin/phpmetro"
+    ]
 }
