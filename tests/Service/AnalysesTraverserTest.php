@@ -12,6 +12,14 @@ class AnalysesTraverserTest extends TestCase
         $this->traverser = new AnalysesTraverser();
     }
 
+    public function testLocatesRoot()
+    {
+        $path = \dirname(__DIR__, 2) . '/';
+        $root = $this->traverser->rootDir;
+
+        $this->assertEquals($path, $root);
+    }
+
     public function testLocatesDirectory()
     {
         $this->traverser->setDirectory('./tests');
