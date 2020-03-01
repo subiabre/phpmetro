@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- PHPMetro by Facundo Subiabre
+    
+    This file is a configuration template.
+    PLEASE REVIEW AND EDIT THIS FILE BEFORE RUNNING PHPMETRO
+
+    http://gitlab.com/subiabre/phpmetro#configuration
+ -->
+<phpmetro
+    bootstrap="vendor/autoload.php",
+    verbose="true" 
+>
+    <!--
+        Suites are Analysis groups that contain similar analyses
+        You can add as many suites as you want inside the <suites> tag
+    -->
+    <suites>
+
+        <!--
+            Each <suite> tag needs to have a name attribute to be distinguished
+            Optionally you can specify a suffix for the suite files (defaults to "Analysis.php")
+            Optionally you can flag them with ignore="true" to skip them from running (defaults to "false")
+        -->
+        <suite 
+            name="My Test Suite"
+            suffix="*.php"
+            ignore="true"
+        >
+            <!--
+                You need to specify the common namespace for this suite
+                You need to specify the suite files directory
+            -->
+            <namespace>MyApp\Tests</namespace>
+            <directory>tests</directory>
+        </suite>
+
+    </suites>
+
+</phpmetro>
