@@ -54,9 +54,7 @@ class AnalysesTraverserTest extends TestCase
         $this->assertIsArray($tests);
         $this->assertNotEmpty($tests);
 
-        $this->assertArraySubset(
-            [$dir => '\PHPMetro\Tests\Service\AnalysesTraverserTest'],
-            $tests  
-        );
+        $this->assertArrayHasKey($dir, $tests);
+        $this->assertEquals($tests[$dir], '\PHPMetro\Tests\Service\AnalysesTraverserTest');
     }
 }
