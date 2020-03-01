@@ -1,5 +1,6 @@
 <?php
 
+use PHPMetro\Service\AnalysesTraverser;
 use PHPUnit\Framework\TestCase;
 
 class AnalysesTraverserTest extends TestCase
@@ -13,7 +14,7 @@ class AnalysesTraverserTest extends TestCase
 
     public function testLocatesDirectory()
     {
-        $this->traverser->setDirectory('tests');
+        $this->traverser->setDirectory('./tests');
 
         $directory = $this->traverser->getDirectory();
 
@@ -33,7 +34,7 @@ class AnalysesTraverserTest extends TestCase
 
     public function testGetClassesWithSuffix()
     {
-        $this->traverser->setDirectory('tests');
+        $this->traverser->setDirectory('/tests');
         $this->traverser->setSuffix('NonExistentSuffix');
 
         $tests = $this->traverser->getClasses();
