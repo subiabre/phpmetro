@@ -45,7 +45,7 @@ This file can be environment specific, `phpmetro.xml.local` will override `phpme
 <?xml version="1.0" encoding="UTF-8"?>
 
 <phpmetro
-    bootstrap="vendor/autoload.php",
+    bootstrap="vendor/autoload.php"
     verbose="true" 
 >
 
