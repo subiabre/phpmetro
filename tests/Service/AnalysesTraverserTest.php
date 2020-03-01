@@ -49,12 +49,13 @@ class AnalysesTraverserTest extends TestCase
         $this->traverser->setNamespace('PHPMetro\Tests');
 
         $tests = $this->traverser->getClasses();
+        $dir = __DIR__ . '/AnalysesTraverserTest.php';
 
         $this->assertIsArray($tests);
         $this->assertNotEmpty($tests);
 
         $this->assertArraySubset(
-            ['tests/Service/AnalysesTraverserTest.php' => 'PHPMetro\Tests\Service\AnalysesTraverserTest'],
+            [$dir => '\PHPMetro\Tests\Service\AnalysesTraverserTest'],
             $tests  
         );
     }
