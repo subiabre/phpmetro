@@ -42,10 +42,14 @@ class ConfigTest extends TestCase
         $this->assertIsArray($suites);
         
         foreach ($suites as $suite) {
-            $name = $suite->getName();
-
             $this->assertIsObject($suite);
-            $this->assertIsString($name);
+            $this->assertInstanceOf(\PHPMetro\Component\Suite::class, $suite);
+
+            $this->assertIsString($suite->getName());
+            $this->assertIsBool($suite->getIgnore());
+            $this->assertIsString($suite->getSuffix());
+            $this->assertIsString($suite->getNamespace());
+            $this->assertIsString($suite->getDirectory());
         }
     }
 }
