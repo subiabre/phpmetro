@@ -25,7 +25,7 @@ class ConfigFinder
      */
     public function load(): Config
     {
-        $file = $this->rootDir . '/phpmetro.xml';
+        $file = $this->rootDir . 'phpmetro.xml';
 
         $configs = [
             $file . '.local',
