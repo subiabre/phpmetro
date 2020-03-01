@@ -28,7 +28,10 @@ class ConfigTest extends TestCase
         $bootstrap = $this->component->getBootstrap();
 
         $this->assertIsBool($verbose);
+        $this->assertTrue($verbose);
+
         $this->assertIsString($bootstrap);
+        $this->assertEquals('vendor/autoload.php', $bootstrap);
         $this->assertFileExists($bootstrap);
     }
 
