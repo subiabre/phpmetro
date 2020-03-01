@@ -8,7 +8,7 @@
     http://gitlab.com/subiabre/phpmetro#configuration
  -->
 <phpmetro
-    bootstrap="vendor/autoload.php",
+    bootstrap="vendor/autoload.php"
     verbose="true" 
 >
     <!--
