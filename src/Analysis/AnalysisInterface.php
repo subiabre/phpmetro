@@ -11,5 +11,7 @@ interface AnalysisInterface
 
     public function addSample(string $name, int $size, callable $function): void;
 
+    public function getSample(string $name): array;
+
     public function getAllTests(): array;
 }
