@@ -45,7 +45,9 @@ class Runner
                 $do = new $class;
                 $do->setUp();
 
-                echo $class;
+                $className = \trim($class, $suite->namespace);
+
+                echo "    " . $className . ":";
                 
                 if ($config->getVerbose()) {
                     $samples = \count($do->sample);
@@ -64,7 +66,7 @@ class Runner
                     foreach ($tests as $test) {
                         $testName = \ltrim($test, 'test');
 
-                        echo $testName . ": " . (string) $do->{$test}();
+                        echo PHP_EOL . "      " . $testName . ": " . (string) $do->{$test}();
                     }
                 }
             }
