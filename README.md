@@ -66,7 +66,7 @@ There are no more run configurations. The runner will automatically fetch files 
 <suites>
     <suite
         name="My Analysis Suite"
-        suffix="PHPMetroFile.php"
+        suffix="Suffix.php"
         ignore="false"
     >
         <namespace>MyApp\Tests</namespace>
