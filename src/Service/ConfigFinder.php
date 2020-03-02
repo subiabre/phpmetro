@@ -11,6 +11,8 @@ use PHPMetro\Component\Config;
  */
 class ConfigFinder
 {
+    private $configLocation;
+
     public $rootDir;
 
     public function __construct()
@@ -42,6 +44,16 @@ class ConfigFinder
             }
         }
 
+        $this->configLocation = $location;
         return new Config($location);
+    }
+
+    /**
+     * Obtain the location of the configuration loaded
+     * @return string
+     */
+    public function getPath(): ?string
+    {
+        return $this->configLocation;
     }
 }
