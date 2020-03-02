@@ -13,6 +13,25 @@ class BaseAnalysisTest extends TestCase
         $this->case = new BaseAnalysis();
     }
 
+    public function testAddSampleCreatesSampleWithLength()
+    {
+        $this->case->addSample('Empty', 10, function() {
+            // functions that don't return values aren't added to the sample
+        });
+        $this->case->addSample('Filled', 10, function() {
+            return '';
+        });
+
+        $empty = $this->case->getSample('Empty');
+        $filled = $this->case->getSample('Filled');
+
+        $this->assertIsArray($empty);
+        $this->assertEmpty($empty);
+
+        $this->assertIsArray($filled);
+        $this->assertEquals(10, \count($filled));
+    }
+
     public function testAddSampleFlagsSettingUp()
     {
         $this->assertFalse($this->case->isSettingUp);
