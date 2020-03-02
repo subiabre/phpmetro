@@ -25,12 +25,15 @@ class BaseAnalysis
      */
     public function addSample(string $name, int $size, callable $function): void
     {
-        for ($i=1; $i < $size; $i++) { 
+        $sample = [];
+        for ($i=1; $i < $size + 1; $i++) { 
             $this->isSettingUp = true;
             
-            if ($function !== null) {
-                $this->sample[$name][$i - 1] = $function();
+            if ($function() !== null) {
+                $sample[$i - 1] = $function();
             }
+
+            $this->sample[$name] = $sample;
         }
 
         $this->isSettingUp = false;
