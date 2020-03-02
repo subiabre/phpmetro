@@ -1,26 +1,44 @@
 # PHPMetro
 Statistical analysis for PHP code.
 
+[![License](https://poser.pugx.org/subiabre/phpmetro/license)](https://packagist.org/packages/subiabre/phpmetro)
+[![Latest Stable Version](https://poser.pugx.org/subiabre/phpmetro/version)](https://packagist.org/packages/subiabre/phpmetro)
+[![pipeline status](https://gitlab.com/subiabre/phpmetro/badges/master/pipeline.svg)](https://gitlab.com/subiabre/phpmetro/-/commits/master)
+[![Total Downloads](https://poser.pugx.org/subiabre/phpmetro/downloads)](https://packagist.org/packages/subiabre/phpmetro)
+[![Latest Unstable Version](https://poser.pugx.org/subiabre/phpmetro/v/unstable)](//packagist.org/packages/subiabre/phpmetro)
+
+Easy sampling and statistical analysis of results for PHP.
+
 1. [About](#About)
-2. [Installation](#Installation)
-3. [Configuration](#Configuration)
-4. [Usage (basic tutorial)](#Usage)
+2. [Requirements](#Requirements)
+3. [Installation](#Installation)
+4. [Configuration](#Configuration)
+5. [Usage (basic tutorial)](#Usage)
+6. [Support](#Support)
+
+---
 
 ## About
 I created this package on winter 2020 because I was working on a project that required me to not only perform unit and functional tests of my code, but to also create and perform several statistical analysis of my code. PHPMetro was my response to that requirement.
 
 >**WARNING**: Despite the origin of this project being that of a professional environment, it's not granted to be suitable for all production environments.
 
+## Requirements
+- PHP >= 7.2*
+- [Composer](https://getcomposer.org)
+
+*Package should be compatible with older versions of PHP down to 5.x, but it's not granted.
+
 ## Installation
-PHPMetro is distributed on [packagist](https://packagist.org/packages/subiabre/phpmetro). Get it using [composer](https://getcomposer.org).
+PHPMetro is distributed on [packagist](https://packagist.org/packages/subiabre/phpmetro).
 
 ```console
 $ composer require --dev subiabre/phpmetro
 ```
 
-Once installed you'll get the phpmetro binary in your vendor folder. After installation you'll want to run `composer suggests subiabre/phpmetro`.
+Once installed you'll get the phpmetro binary in your vendor folder. After installation you'll want to run `composer suggests subiabre/phpmetro` to see some more libraries you'll find useful when writing your analyses, as PHPMetro only contains a foundation for describing analysis cases with an specific workflow, and a runner to perform all our analyses based on a given configuration.
 
->**NOTE**: It's assummed you'll only need PHPMetro on development. Avoid possible vulnerabilities by requiring it only on dev.
+>**NOTE**: It's assummed you'll only need PHPMetro on development. Avoid possible vulnerabilities and save space by requiring it only on dev.
 
 ## Configuration
 PHPMetro **needs** to have a `phpmetro.xml` file at the root of your project. This file will tell where to search for our Analysis classes and how to run them.
@@ -33,9 +51,9 @@ $ ./vendor/bin/phpmetro
 ```
 
 ### Configuring
-The `phpmetro.xml` file specifies general run directives for the PHPMetro binary as well as defines the analyses by suite groups.
+The *.xml* config file specifies general run directives for the PHPMetro binary as well as defines the analyses by suite groups.
 
-This file can be environment specific, `phpmetro.xml.local` will override `phpmetro.xml` and `phpmetro.xml.dist`.
+This file can be environment specific: `phpmetro.xml.local` will override `phpmetro.xml.dist` and this will override `phpmetro.xml`.
 
 1. [Configuring PHPMetro](#Configuring-PHPMetro)
 2. [Configuring Suites](#Configuring-Suites)
@@ -59,7 +77,7 @@ The two attributes you see are required and they mean:
 - **bootstrap**: The classes mapper. Usually your composer autoload.
 - **verbose**: When set to "true" PHPMetro will display additional run info.
 
-There are no more run configurations. The runner will automatically fetch files from the suites you define. You can define more configurations per suite.
+There are no more run configurations. The runner will automatically fetch files from the suites you define. You can set more configurations per suite.
 
 #### Configuring Suites
 ```xml
@@ -87,12 +105,10 @@ Inside each suite there must be two more tags specificating:
 - **namespace**: The common namespace for the suite classes.
 - **directory**: The folder where all the classes are at.
 
-You must adhere to the [PSR-4](https://getcomposer.org/doc/04-schema.md#psr-4) specification when filenaming your Analyses.
-
-If you have an Analysis with the namespace `MyApp\Tests\Foo\BarAnalysis`, for this class to be properly identified by PHPMetro it will have to be located at `tests/Foo/BarAnalysis.php`.
+You must adhere to the [PSR-4](https://getcomposer.org/doc/04-schema.md#psr-4) specification when filenaming your Analyses. If you have an Analysis with the namespace `MyApp\Tests\Foo\BarAnalysis`, for this class to be properly identified by PHPMetro it will have to be located at `tests/Foo/BarAnalysis.php`.
 
 ## Usage
-Say you have your own random number generator: `MyApp\RandomNumber`, and want to see some statistics about it. PHPMetro is your package for that! Let's put it under "Analysis".
+Say you have your own random number generator, `MyApp\RandomNumber`, and want to see some statistics about it. PHPMetro is your package for that! Let's put it under "Analysis".
 
 An *Analysis* is an special class that extends from the `AnalysisCase` class and contains a set up with Samples and several Tests over the samples.
 
@@ -134,13 +150,15 @@ To add data to a sample we use the `addSample` function, this function takes exa
 
 >**NOTE**: Function calls that don't return a value will not be added to the Sample, resulting in a size lesser than the specified one.
 
-You can call to `addSample` anywhere in your Analyses, actually, this function will hold the execution of the code until it finishes adding records. However it is recommended that you add your Samples on set up for performance reasons.
+The `setUp` method is required by the `AnalysisInterface`. All analyses must implement this method with the purpose of being run before test methods in the Analysis.
+
+You can call to `addSample` anywhere inside your class methods, actually, this function will hold the execution of the runner until it finishes adding records. However it is recommended that you add your Samples on set up for performance and maintainability reasons.
 
 >**NOTE**: Unlike other testing frameworks and libraries, PHPMetro will run the method `setUp` only once before running all tests instead of once before each test.
 
 Now that there is Sample data we can start performing some calculations on it. For that you must simply just add Test methods in your class.
 
-A *Test* is an special class method inside your Analysis class that performs some kind of calculation and returns the result. These methods must match the regular expression: `test[A-Za-z09]*` and return a basic data type.
+A *Test* is an special class method inside your Analysis class that performs some kind of calculation and returns the result. These methods must match the regular expression `test[A-Za-z09]*` and return a basic data type.
 
 >**WARNING**: Tests that return complex data types such as arrays or objects that can't be casted to strings will throw an error exception and stop the PHPMetro run.
 
@@ -174,3 +192,12 @@ $ ./vendor/bin/phpmetro
 ```
 
 Your Tests results should start appearing on your console screen nested by Analysis class (assuming you configured your `phpmetro.xml` file properly).
+
+## Support
+You can support this project by contributing to open issues or creating pull requests to improve/fix existing code. Contributors are welcome.
+
+If you liked this package give it a star.
+
+If you have any doubt, [contact me](mailto:subiabrewd@mail.com).
+
+Thank you!
