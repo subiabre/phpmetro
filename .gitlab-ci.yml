@@ -1,5 +1,5 @@
 # Select image from https://hub.docker.com/_/php/
-image: php:^7.2
+image: php:7.2
 
 # Include gitlab ci templates
 include:
