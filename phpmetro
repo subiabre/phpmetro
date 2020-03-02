@@ -15,8 +15,6 @@ $level = 1;
 while ($level < 6) {
     $file = \dirname(__DIR__, $level) . '/vendor/autoload.php';
 
-    echo $file . PHP_EOL;
-
     if (\file_exists($file)) {
         define('PHPMETRO_AUTOLOAD', $file);
 
