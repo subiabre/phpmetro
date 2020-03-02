@@ -15,7 +15,7 @@ class BaseAnalysis
      */
     public $isSettingUp = false;
 
-    protected $sample;
+    public $sample;
 
     /**
      * Create a new sample with the given size and name
