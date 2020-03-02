@@ -140,7 +140,7 @@ You can call to `addSample` anywhere in your Analyses, actually, this function w
 
 Now that there is Sample data we can start performing some calculations on it. For that you must simply just add Test methods in your class.
 
-A *Test* is an special class method inside your Analysis class that performs some kind of calculation and returns the result. These methods must match the regular expression: `/test[A-Za-z09]*\(\)/` and return a basic data type.
+A *Test* is an special class method inside your Analysis class that performs some kind of calculation and returns the result. These methods must match the regular expression: `test[A-Za-z09]*` and return a basic data type.
 
 >**WARNING**: Tests that return complex data types such as arrays or objects that can't be casted to strings will throw an error exception and stop the PHPMetro run.
 
