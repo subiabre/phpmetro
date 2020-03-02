@@ -17,9 +17,11 @@ class BaseAnalysisTest extends TestCase
     {
         $this->assertFalse($this->case->isSettingUp);
 
-        $this->case->addSample('Test', 1000, function(){
+        $this->case->addSample('Test', 10, function(){
             $this->assertTrue($this->case->isSettingUp);
         });
+
+        $this->assertFalse($this->case->isSettingUp);
     }
 
     public function testGetsAllTestsAsAnArray()
