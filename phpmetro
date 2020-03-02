@@ -12,11 +12,15 @@
 // Find composer autoload
 $level = 1;
 
-while ($level < 2) {
+while ($level < 6) {
     $file = \dirname(__DIR__, $level) . '/vendor/autoload.php';
+
+    echo $file . PHP_EOL;
 
     if (\file_exists($file)) {
         define('PHPMETRO_AUTOLOAD', $file);
+
+        break;
     }
 
     $level++;
@@ -33,7 +37,7 @@ if (!defined('PHPMETRO_AUTOLOAD')) {
     die(1);
 }
 
-require $autoload;
+require PHPMETRO_AUTOLOAD;
 
 try {
     PHPMetro\Service\Runner::launch();
