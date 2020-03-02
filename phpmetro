@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * This file is the binary runner for PHPMetro
+ * 
+ *  https://gitlab.com/subiabre/phpmetro
+ *  
+ *  By Facundo Subiabre, email me at: subiabrewd at gmail dot com.
+ */
+
+// Find composer autoload
+$level = 1;
+
+while ($level < 2) {
+    $file = \dirname(__DIR__, $level) . '/vendor/autoload.php';
+
+    if (\file_exists($file)) {
+        define('PHPMETRO_AUTOLOAD', $file);
+    }
+
+    $level++;
+}
+
+// No autoload found
+if (!defined('PHPMETRO_AUTOLOAD')) {
+    fwrite(
+        STDERR,
+        'You need to set up the project dependencies using Composer:' . PHP_EOL .
+        '   composer install' . PHP_EOL . PHP_EOL
+    );
+
+    die(1);
+}
+
+require $autoload;
+
+try {
+    PHPMetro\Service\Runner::launch();
+} catch (Exception $e) {
+    fwrite(
+        STDERR,
+        $e->getMessage()
+    );
+}
