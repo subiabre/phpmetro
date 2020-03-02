@@ -60,7 +60,7 @@ class BaseAnalysis
 
         foreach ($methods as $method)
         {
-            if (\preg_match('/test[A-Za-z09]*\(\)/', $method) && $this->{$method}() !== null) {
+            if (\preg_match('/test[A-Za-z09]*/', $method) && $this->{$method}() !== null) {
                 $tests[] = $method;
             }
         }
