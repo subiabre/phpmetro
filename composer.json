@@ -28,6 +28,6 @@
         "psr-4": { "PHPMetro\\Tests\\": "tests/" }
     },
     "bin": [
-        "bin/phpmetro"
+        "phpmetro"
     ]
 }
