@@ -16,10 +16,10 @@ class Runner
         $loader = new ConfigFinder();
         $config = $loader->load();
 
-        echo PHP_EOL . "PHPMetro by Facundo Subiabre." . PHP_EOL;
+        echo "PHPMetro by Facundo Subiabre." . PHP_EOL;
 
         if ($config->getVerbose()) {
-            echo PHP_EOL . "Configuration: " . $loader->getPath() . PHP_EOL;
+            echo "Configuration: " . $loader->getPath() . PHP_EOL;
 
             $startTime = \microtime(true);
         }
@@ -37,7 +37,7 @@ class Runner
 
             $analyses = $traverser->getClasses();
 
-            echo "  " . $suite->getName() . PHP_EOL;
+            echo PHP_EOL . "  " . $suite->getName() . PHP_EOL;
 
             foreach ($analyses as $file => $class) {
                 include $file;
@@ -45,7 +45,7 @@ class Runner
                 $do = new $class;
                 $do->setUp();
 
-                $className = \trim($class, $suite->namespace);
+                $className = \ltrim(\rtrim($class, $suite->getSuffix()), $suite->getNamespace());
 
                 echo "    " . $className . ":";
                 
@@ -57,7 +57,7 @@ class Runner
                         $records += \count($sample);
                     }
 
-                    echo $samples . " samples with " . $records . " records.";
+                    echo " " . $samples . " samples with " . $records . " records.";
                 }
 
                 if (!$do->isSettingUp) {
@@ -68,15 +68,17 @@ class Runner
 
                         echo PHP_EOL . "      " . $testName . ": " . (string) $do->{$test}();
                     }
+
+                    echo PHP_EOL;
                 }
             }
 
             if ($config->getVerbose()) {
                 $endTime = \microtime(true);
-                $runTime = $endTime - $startTime;
-                $memory = \memory_get_peak_usage() / 1024;
+                $runTime = \substr($endTime - $startTime, 0, 5);
+                $memory = \substr(\memory_get_peak_usage() / (1024 * 1024), 0, 5);
 
-                echo "Time: " . $runTime . ", Memory: " . $memory;
+                echo PHP_EOL . "Time: " . $runTime . "s, Memory: " . $memory . " MB" . PHP_EOL;
             }
         }
     }
