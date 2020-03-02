@@ -44,4 +44,11 @@ try {
         STDERR,
         $e->getMessage()
     );
+
+    fwrite(
+        STDERR,
+        "Terminating script execution."
+    );
+
+    die(1);
 }
