@@ -1,0 +1,51 @@
+# Select image from https://hub.docker.com/_/php/
+image: php:^7.2
+
+# Include gitlab ci templates
+include:
+  - template: License-Management.gitlab-ci.yml
+  - template: Dependency-Scanning.gitlab-ci.yml
+
+# Define stages
+stages:
+  - seccompl
+  - tests
+
+before_script:
+  - apt-get update -yqq
+  - apt-get install git -yqq zlib1g-dev exiftool
+  # Install php libzip
+  - docker-php-ext-install zip
+  # Install php other
+  - docker-php-ext-install ctype iconv json session tokenizer
+  - docker-php-ext-enable ctype iconv json session tokenizer
+  # Install composer
+  - curl -sS https://getcomposer.org/installer | php
+  # Install all project dependencies
+  - php composer.phar install
+  - php composer.phar update
+
+# Scan dependencies
+dependency_scanning:
+  stage: seccompl
+  before_script: 
+    # Override the global before_script because it causes this stage to fail
+    - echo "Starting dependency scanning..."
+
+# Scan licenses
+license_management:
+  stage: seccompl
+  before_script:
+    # Override the global before_script
+    - echo "Starting licenses compliance management..."
+
+# Select what we should cache between builds    
+cache:
+  paths:
+  - vendor/
+
+# Run unit tests
+phpunit:
+  stage: tests
+  script:
+    - ./vendor/bin/phpunit
