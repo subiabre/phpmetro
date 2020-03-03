@@ -1,5 +1,5 @@
 # PHPMetro
-Statistical analysis for PHP code.
+Streamlined statistical sampling and analysis of results.
 
 [![License](https://poser.pugx.org/subiabre/phpmetro/license)](https://packagist.org/packages/subiabre/phpmetro)
 [![Latest Stable Version](https://poser.pugx.org/subiabre/phpmetro/version)](https://packagist.org/packages/subiabre/phpmetro)
@@ -7,7 +7,7 @@ Statistical analysis for PHP code.
 [![Total Downloads](https://poser.pugx.org/subiabre/phpmetro/downloads)](https://packagist.org/packages/subiabre/phpmetro)
 [![Latest Unstable Version](https://poser.pugx.org/subiabre/phpmetro/v/unstable)](//packagist.org/packages/subiabre/phpmetro)
 
-Easy sampling and statistical analysis of results for PHP.
+PHPMetro provides the foundation to perform sampling and analysis of data in a PHPUnit-like fashion, aiming to make it as easy as possible for PHP developers to compose analysis suites and get statistical results.
 
 1. [About](#About)
 2. [Requirements](#Requirements)
@@ -19,7 +19,7 @@ Easy sampling and statistical analysis of results for PHP.
 ---
 
 ## About
-I created this package on winter 2020 because I was working on a project that required me to not only perform unit and functional tests of my code, but to also create and perform several statistical analysis of my code. PHPMetro was my response to that requirement.
+I created this package on winter 2020 because I was working on a project that required me to not only perform unit and functional tests of my code, but to also create and perform several statistical analyses of my code. PHPMetro was my response to that requirement.
 
 >**WARNING**: Despite the origin of this project being that of a professional environment, it's not granted to be suitable for all production environments.
 
@@ -36,7 +36,7 @@ PHPMetro is distributed on [packagist](https://packagist.org/packages/subiabre/p
 $ composer require --dev subiabre/phpmetro
 ```
 
-Once installed you'll get the phpmetro binary in your vendor folder. After installation you'll want to run `composer suggests subiabre/phpmetro` to see some more libraries you'll find useful when writing your analyses, as PHPMetro only contains a foundation for describing analysis cases with an specific workflow, and a runner to perform all our analyses based on a given configuration.
+Once installed you'll get the phpmetro binary in your vendor folder. After installation you'll want to run `composer suggests subiabre/phpmetro` to see some more libraries you'll find useful when writing your analyses, as PHPMetro only contains a basic toolset for describing analysis cases with an specific workflow, and a runner to perform all our analyses based on a given configuration.
 
 >**NOTE**: It's assummed you'll only need PHPMetro on development. Avoid possible vulnerabilities and save space by requiring it only on dev.
 
@@ -110,7 +110,8 @@ You must adhere to the [PSR-4](https://getcomposer.org/doc/04-schema.md#psr-4) s
 ## Usage
 Say you have your own random number generator, `MyApp\RandomNumber`, and want to see some statistics about it. PHPMetro is your package for that! Let's put it under "Analysis".
 
-An *Analysis* is an special class that extends from the `AnalysisCase` class and contains a set up with Samples and several Tests over the samples.
+### Creating an Analysis class
+An *Analysis* is an special class that extends from `AnalysisCase` and contains a set up with samples and several tests over the samples.
 
 ```php
 <?php
@@ -124,10 +125,11 @@ class RandomNumberAnalysis extends AnalysisCase
 {
     # ...
 }
-
 ```
 
 Congratulations, you just created your very first Analysis. But just like that it's pretty much useless. Now you need to add some Samples to your Analysis.
+
+### Adding Sample data
 
 A *Sample* is an special array inside the `AnalysisCase` class that contains sample data from a given set of functions. On your Analysis class add:
 
@@ -152,36 +154,54 @@ To add data to a sample we use the `addSample` function, this function takes exa
 
 The `setUp` method is required by the `AnalysisInterface`. All analyses must implement this method with the purpose of being run before test methods in the Analysis.
 
-You can call to `addSample` anywhere inside your class methods, actually, this function will hold the execution of the runner until it finishes adding records. However it is recommended that you add your Samples on set up for performance and maintainability reasons.
+You can call to `addSample` anywhere inside your class methods actually, this function will hold the execution of the runner until it finishes adding records. However it is recommended that you add your Samples on set up for performance and maintainability reasons.
 
 >**NOTE**: Unlike other testing frameworks and libraries, PHPMetro will run the method `setUp` only once before running all tests instead of once before each test.
 
 Now that there is Sample data we can start performing some calculations on it. For that you must simply just add Test methods in your class.
 
+### Writing Test methods
+
 A *Test* is an special class method inside your Analysis class that performs some kind of calculation and returns the result. These methods must match the regular expression `test[A-Za-z09]*` and return a basic data type.
 
->**WARNING**: Tests that return complex data types such as arrays or objects that can't be casted to strings will throw an error exception and stop the PHPMetro run.
+>**WARNING**: Tests that return complex data types such as arrays or objects that can't be typecasted to strings will throw an error exception and stop the PHPMetro run.
 
-For example, we want to test what's the median average of the generated random numbers:
+For example, we want to test what's the median average of the generated random numbers.
+
+Our Analysis class should look like this:
 
 ```php
-public function testMedianAverage()
+<?php
+# tests/RandomNumber/RandomNumberAnalysis.php
+namespace MyApp\Tests\RandomNumber;
+
+// MathPHP provides nice maths
+use MathPHP\Statistics\Average;
+
+use MyApp\RandomNumber;
+use PHPMetro\Analysis\AnalysisCase;
+
+class RandomNumberAnalysis extends AnalysisCase
 {
-    $sample = $this->getSample('RandomNumbers');
-
-    $total = \count($sample);
-    $sum = 0;
-
-    foreach ($sample as $number)
+    public function setUp(): void
     {
-        $sum += $number;
+        $this->addSample('RandomNumbers', 100, function() {
+            $randomNumber = new RandomNumber();
+
+            return $randomNumber->new();
+        });
     }
 
-    return $sum / $total;
+    public function testMedianAverage()
+    {
+        $sample = $this->getSample('RandomNumbers');
+
+        return Average::median($sample);
+    }
 }
 ```
 
-To calculate it we first accessed the sample we added on set up with `getSample`, and then counted the sum of the total values and the number of values. Your classic average.
+To calculate it we first accessed the sample we added on set up with `getSample`, and then passed it to [MathPHP](https://packagist.org/packages/markrogoyski/math-php)'s `Average` to calculate the median for us.
 
 You can keep writing more Tests to calculate different things with your Samples. Write Tests as you need them.
 
@@ -193,11 +213,13 @@ $ ./vendor/bin/phpmetro
 
 Your Tests results should start appearing on your console screen nested by Analysis class (assuming you configured your `phpmetro.xml` file properly).
 
+![PHPMetro on Console](https://repository-images.githubusercontent.com/240975382/6afb1380-5cef-11ea-8e81-b1fdb2993b9a)
+
 ## Support
 You can support this project by contributing to open issues or creating pull requests to improve/fix existing code. Contributors are welcome.
 
-If you liked this package give it a star.
+If you liked this package give it a star or tell a friend about it.
 
-If you have any doubt, [contact me](mailto:subiabrewd@mail.com).
+If you have any doubt or commentary, [contact me](mailto:subiabrewd@mail.com).
 
 Thank you!
