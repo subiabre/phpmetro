@@ -5,10 +5,9 @@ Streamlined statistical sampling and analysis of results.
 
 [![License](https://poser.pugx.org/subiabre/phpmetro/license)](https://packagist.org/packages/subiabre/phpmetro)
 [![Latest Stable Version](https://poser.pugx.org/subiabre/phpmetro/version)](https://packagist.org/packages/subiabre/phpmetro)
-[![pipeline status](https://gitlab.com/subiabre/phpmetro/badges/master/pipeline.svg)](https://gitlab.com/subiabre/phpmetro/-/commits/master)
 [![Total Downloads](https://poser.pugx.org/subiabre/phpmetro/downloads)](https://packagist.org/packages/subiabre/phpmetro)
 [![Latest Unstable Version](https://poser.pugx.org/subiabre/phpmetro/v/unstable)](//packagist.org/packages/subiabre/phpmetro)
-
+[![pipeline status](https://gitlab.com/subiabre/phpmetro/badges/master/pipeline.svg)](https://gitlab.com/subiabre/phpmetro/-/commits/master)
 
 PHPMetro provides the foundation to perform sampling and analysis of data in a PHPUnit-like fashion, aiming to make it as easy as possible for PHP developers to compose analysis suites and get statistical results.
 
