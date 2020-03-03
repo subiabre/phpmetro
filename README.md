@@ -1,11 +1,14 @@
 # PHPMetro
 Streamlined statistical sampling and analysis of results.
 
+![PHPMetro logo](https://user-images.githubusercontent.com/61125897/75801933-35e8d280-5d7c-11ea-9eab-8f788f97a0d9.png)
+
 [![License](https://poser.pugx.org/subiabre/phpmetro/license)](https://packagist.org/packages/subiabre/phpmetro)
 [![Latest Stable Version](https://poser.pugx.org/subiabre/phpmetro/version)](https://packagist.org/packages/subiabre/phpmetro)
 [![pipeline status](https://gitlab.com/subiabre/phpmetro/badges/master/pipeline.svg)](https://gitlab.com/subiabre/phpmetro/-/commits/master)
 [![Total Downloads](https://poser.pugx.org/subiabre/phpmetro/downloads)](https://packagist.org/packages/subiabre/phpmetro)
 [![Latest Unstable Version](https://poser.pugx.org/subiabre/phpmetro/v/unstable)](//packagist.org/packages/subiabre/phpmetro)
+
 
 PHPMetro provides the foundation to perform sampling and analysis of data in a PHPUnit-like fashion, aiming to make it as easy as possible for PHP developers to compose analysis suites and get statistical results.
 
@@ -213,7 +216,7 @@ $ ./vendor/bin/phpmetro
 
 Your Tests results should start appearing on your console screen nested by Analysis class (assuming you configured your `phpmetro.xml` file properly).
 
-![PHPMetro on Console](https://repository-images.githubusercontent.com/240975382/6afb1380-5cef-11ea-8e81-b1fdb2993b9a)
+![PHPMetro on Console](https://user-images.githubusercontent.com/61125897/75801800-0043e980-5d7c-11ea-85fd-ea5d405e7b50.png)
 
 ## Support
 You can support this project by contributing to open issues or creating pull requests to improve/fix existing code. Contributors are welcome.
