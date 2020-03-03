@@ -19,7 +19,7 @@ PHPMetro provides the foundation to perform sampling and analysis of data in a P
 ---
 
 ## About
-I created this package on winter 2020 because I was working on a project that required me to not only perform unit and functional tests of my code, but to also create and perform several statistical analyses of my code. PHPMetro was my response to that requirement.
+I created this package on winter 2019 because I was working on a project that required me to not only perform unit and functional tests of my code, but to also create and perform several statistical analyses of my code. PHPMetro was my response to that requirement.
 
 >**WARNING**: Despite the origin of this project being that of a professional environment, it's not granted to be suitable for all production environments.
 
