@@ -15,11 +15,27 @@ class Config
     public $xml;
 
     /**
+     * Path to the config file
+     * @var String
+     */
+    protected $location;
+
+    /**
      * @param string $location Location of the .xml file
      */
     public function __construct(string $location)
     {
-        $this->xml = \simplexml_load_file($location);
+        $this->location = $location;
+        $this->xml = \simplexml_load_file($this->location);
+    }
+
+    /**
+     * Get the location of the config file
+     * @return string
+     */
+    public function getLocation(): string
+    {
+        return $this->location;
     }
 
     /**

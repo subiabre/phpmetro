@@ -14,6 +14,11 @@ class ConfigTest extends TestCase
         $this->component = new Config($config);
     }
 
+    public function testGetsLocation()
+    {
+        $this->assertIsString($this->component->getLocation());
+    }
+
     public function testXmlIsSimpleXMLElement()
     {
         $xml = $this->component->xml;
