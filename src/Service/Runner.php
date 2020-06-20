@@ -15,9 +15,10 @@ class Runner
     {
         $loader = new ConfigFinder();
         $config = $loader->load();
-        $version = new Version('X.Y.Z', __DIR__);
+        $version = (new Version('X.Y.Z', \dirname(__DIR__, 2)));
+        $versionNumber = $version->getVersion();
 
-        echo "PHPMetro $version by Facundo Subiabre." . PHP_EOL;
+        echo "PHPMetro $versionNumber by Facundo Subiabre." . PHP_EOL;
 
         if ($config->getVerbose()) {
             echo "Configuration: " . $loader->getPath() . PHP_EOL;
