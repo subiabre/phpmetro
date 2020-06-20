@@ -13,6 +13,7 @@ class CommandsLoader
     {
         return [
             // Commands instances
+            new Run
         ];
     }
 }
