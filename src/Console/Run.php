@@ -30,6 +30,7 @@ class Run extends Command
         if ($output->isVerbose() || $config->getVerbose())
         {
             $output->writeln("Configuration: " . $config->getLocation());
+            $output->writeln('');
 
             $startTime = \microtime(true);
         }
@@ -84,6 +85,7 @@ class Run extends Command
                     $runTime = \substr($endTime - $startTime, 0, 5);
                     $memory = \substr(\memory_get_peak_usage() / (1024 * 1024), 0, 5);
     
+                    $output->writeln('');
                     $output->writeln("Time: " . $runTime . "s, Memory: " . $memory . " MB");
                 }
 
