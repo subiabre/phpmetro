@@ -9,7 +9,7 @@ include:
 # Define stages
 stages:
   - seccompl
-  - tests
+  - test
 
 before_script:
   - apt-get update -yqq
@@ -26,14 +26,14 @@ before_script:
   - php composer.phar update
 
 # Scan dependencies
-dependency_scanning:
+gemnasium-dependency_scanning:
   stage: seccompl
   before_script: 
     # Override the global before_script because it causes this stage to fail
     - echo "Starting dependency scanning..."
 
 # Scan licenses
-license_management:
+license_scanning:
   stage: seccompl
   before_script:
     # Override the global before_script
@@ -46,6 +46,6 @@ cache:
 
 # Run unit tests
 phpunit:
-  stage: tests
+  stage: test
   script:
     - ./vendor/bin/phpunit
