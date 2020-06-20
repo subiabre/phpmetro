@@ -2,8 +2,6 @@
 
 namespace PHPMetro\Service;
 
-use PHPMetro\Component\Config;
-
 /**
  * Runner service, put's together the components to perform the analyses
  * @package PHPMetro
