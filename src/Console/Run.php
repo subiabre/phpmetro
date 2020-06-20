@@ -29,6 +29,8 @@ class Run extends Command
 
         if ($output->isVerbose() || $config->getVerbose())
         {
+            $output->writeln("Configuration: " . $config->getLocation());
+
             $startTime = \microtime(true);
         }
 
