@@ -2,6 +2,8 @@
 
 namespace PHPMetro\Service;
 
+use SebastianBergmann\Version;
+
 /**
  * Runner service, put's together the components to perform the analyses
  * @package PHPMetro
@@ -13,8 +15,9 @@ class Runner
     {
         $loader = new ConfigFinder();
         $config = $loader->load();
+        $version = new Version('X.Y.Z', __DIR__);
 
-        echo "PHPMetro by Facundo Subiabre." . PHP_EOL;
+        echo "PHPMetro $version by Facundo Subiabre." . PHP_EOL;
 
         if ($config->getVerbose()) {
             echo "Configuration: " . $loader->getPath() . PHP_EOL;
