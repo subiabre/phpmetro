@@ -4,19 +4,18 @@
 /**
  * This file is the binary runner for PHPMetro
  * 
- *  https://gitlab.com/subiabre/phpmetro
+ *  https://github.com/subiabre/phpmetro
  *  
  *  By Facundo Subiabre, email me at: subiabrewd at gmail dot com.
  */
 
 // Find composer autoload
 $level = 1;
-
 while ($level < 6) {
     $file = \dirname(__DIR__, $level) . '/vendor/autoload.php';
 
     if (\file_exists($file)) {
-        define('PHPMETRO_AUTOLOAD', $file);
+        define('PHPMETRO_VENDOR_AUTOLOAD', $file);
 
         break;
     }
@@ -24,8 +23,16 @@ while ($level < 6) {
     $level++;
 }
 
+if (!defined('PHPMETRO_VENDOR_AUTOLOAD')) {
+    $file = __DIR__ . '/vendor/autoload.php';
+
+    if (\file_exists($file)) {
+        define('PHPMETRO_VENDOR_AUTOLOAD', $file);
+    }
+}
+
 // No autoload found
-if (!defined('PHPMETRO_AUTOLOAD')) {
+if (!defined('PHPMETRO_VENDOR_AUTOLOAD')) {
     fwrite(
         STDERR,
         'You need to set up the project dependencies using Composer:' . PHP_EOL .
@@ -35,20 +42,15 @@ if (!defined('PHPMETRO_AUTOLOAD')) {
     die(1);
 }
 
-require PHPMETRO_AUTOLOAD;
+require PHPMETRO_VENDOR_AUTOLOAD;
 
-try {
-    PHPMetro\Service\Runner::launch();
-} catch (Exception $e) {
-    fwrite(
-        STDERR,
-        $e->getMessage()
-    );
+use PHPMetro\Console\CommandsLoader;
+use SebastianBergmann\Version;
+use Symfony\Component\Console\Application;
 
-    fwrite(
-        STDERR,
-        "Terminating script execution."
-    );
+$version = new Version('X.Y.Z', __DIR__);
+$console = new Application('APIO', $version->getVersion());
 
-    die(1);
-}
+$console->addCommands((new CommandsLoader)->getCommands());
+
+$console->run();
