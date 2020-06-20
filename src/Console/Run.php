@@ -42,7 +42,7 @@ class Run extends Command
 
             $traverser->setSuffix($suite->getSuffix());
             $traverser->setNamespace($suite->getNamespace());
-            $traverser->setDirectory($suite->setDirectory());
+            $traverser->setDirectory($suite->getDirectory());
 
             $analyses = $traverser->getClasses();
 
