@@ -32,7 +32,7 @@
                 You need to specify the suite files directory
             -->
             <namespace>PHPMetro\Tests\Self</namespace>
-            <directory>tests/self</directory>
+            <directory>tests/Self</directory>
         </suite>
 
     </suites>
