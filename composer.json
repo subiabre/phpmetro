@@ -13,7 +13,9 @@
     "support": {
         "email": "subiabrewd@gmail.com"
     },
-    "require": {},
+    "require": {
+        "symfony/console": "^5.1"
+    },
     "require-dev": {
         "phpunit/phpunit": "^8.5"
     },
