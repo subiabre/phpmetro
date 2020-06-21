@@ -79,8 +79,13 @@ class Run extends Command
 
                 if ($output->isVerbose() || $config->getVerbose()) {
                     $endTime = \microtime(true);
-                    $runTime = \substr($endTime - $startTime, 0, 5);
-                    $memory = \substr(\memory_get_peak_usage() / (1024 * 1024), 0, 5);
+                    $runTime = \substr($endTime - $startTime, 0, 6);
+                    $memory = \substr(\memory_get_peak_usage() / (1024 * 1024), 0, 6);
+
+                    if ($output->isVeryVerbose()) {
+                        $runTime = $endTime - $startTime;
+                        $memory = \memory_get_peak_usage() / (1024 * 1024);
+                    }
     
                     $output->writeln('');
                     $output->writeln("Time: " . $runTime . "s, Memory: " . $memory . " MB");
