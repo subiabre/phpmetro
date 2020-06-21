@@ -17,6 +17,8 @@ class BaseAnalysis implements AnalysisInterface
 
     public $sample;
 
+    public $samplesSize = 0;
+
     public $sizes;
 
     /**
@@ -28,9 +30,8 @@ class BaseAnalysis implements AnalysisInterface
     public function addSample(string $name, int $size, callable $function): void
     {
         $this->sample[$name] = [];
-        $this->sizes[$name] = 0;
 
-        $i = 0;
+        $i = 0; $sampleSize = 0;
         while ($i < $size) {
             $this->isSettingUp = true;
             $result = $function();
@@ -38,11 +39,14 @@ class BaseAnalysis implements AnalysisInterface
             if ($result !== null)
             {
                 $this->sample[$name][$i] = $result;
-                $this->sizes[$name] += 1;
+                $sampleSize++;
             }
 
             $i++;
         }
+
+        $this->sizes[$name] = $sampleSize;
+        $this->samplesSize += $sampleSize;
 
         $this->isSettingUp = false;
     }
@@ -74,13 +78,7 @@ class BaseAnalysis implements AnalysisInterface
      */
     public function getSampleSize(): int
     {
-        $size = 0;
-        
-        foreach ($this->sizes as $key => $sample) {
-            $size += $sample;
-        }
-
-        return $size;
+        return $this->samplesSize;
     }
 
     /**

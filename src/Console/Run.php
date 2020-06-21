@@ -62,11 +62,7 @@ class Run extends Command
 
                 if ($output->isVerbose() || $config->getVerbose()) {
                     $samples = \count($do->sample);
-                    $records = 0;
-
-                    foreach ($do->sample as $sample) {
-                        $records += \count($sample);
-                    }
+                    $records = $do->getSampleSize();
 
                     $output->writeln(">> " . $samples . " samples with " . $records . " records.");
                 }
