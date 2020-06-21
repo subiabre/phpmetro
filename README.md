@@ -142,7 +142,7 @@ A *Sample* is an special array inside the `AnalysisCase` class that contains sam
 ```php
 public function setUp(): void
 {
-    $this->addSample('RandomNumber', 100, function(){
+    $this->addSample('RandomNumber', 100, function() {
         $randomNumber = new RandomNumber();
 
         return $randomNumber->new();
@@ -172,6 +172,8 @@ A *Test* is an special class method inside your Analysis class that performs som
 
 >**WARNING**: Tests that return complex data types such as arrays or objects that can't be typecasted to strings will throw an error exception and stop the PHPMetro run.
 
+>**NOTE**: Tests that don't specify a return type will be ignored and not executed.
+
 For example, we want to test what's the median average of the generated random numbers.
 
 Our Analysis class should look like this:
@@ -198,7 +200,7 @@ class RandomNumberAnalysis extends AnalysisCase
         });
     }
 
-    public function testMedianAverage()
+    public function testMedianAverage(): int
     {
         $sample = $this->getSample('RandomNumbers');
 
@@ -217,11 +219,11 @@ Finally, to run the Analyses just run the binary:
 $ ./vendor/bin/phpmetro run
 ```
 
-Your Tests results should start appearing on your console screen nested by Analysis class (assuming you configured your `phpmetro.xml` file properly).
+Your Tests results should start appearing on your console screen.
 
 ![PHPMetro on console](https://user-images.githubusercontent.com/61125897/85226898-24ceda80-b3da-11ea-892f-72c6d84e8a2e.png)
 
->You can check more usage examples inside `tests/Self` folder.
+>You can check more usage examples inside `tests/Self` folder. Which is the self analysis suite described in `tests/phpmetro.xml`.
 
 ## Support
 You can support this project by contributing to open issues or creating pull requests to improve/fix existing code. Contributors are welcome.
