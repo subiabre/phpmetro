@@ -21,4 +21,14 @@ class ConfigFinderTest extends TestCase
         $this->assertIsObject($config);
         $this->assertInstanceOf(\PHPMetro\Component\Config::class, $config);
     }
+
+    public function testGetPath()
+    {
+        $this->finder->load();
+
+        $path = $this->finder->getPath();
+        $expected = \dirname(__DIR__, 2) . '/phpmetro.xml';
+        
+        $this->assertSame($expected ,$path);
+    }
 }
