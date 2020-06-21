@@ -32,5 +32,8 @@
     },
     "bin": [
         "phpmetro"
-    ]
+    ],
+    "scripts": {
+        "test": "phpunit"
+    }
 }
