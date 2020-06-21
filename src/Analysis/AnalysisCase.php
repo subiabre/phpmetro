@@ -7,7 +7,7 @@ namespace PHPMetro\Analysis;
  * @package PHPMetro
  * @author subiabrewd@gmail.com
  */
-abstract class AnalysisCase extends BaseAnalysis implements AnalysisInterface
+abstract class AnalysisCase extends BaseAnalysis
 {
     /**
      * Will be run once before all tests
