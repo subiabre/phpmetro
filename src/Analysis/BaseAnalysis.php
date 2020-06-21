@@ -2,6 +2,7 @@
 
 namespace PHPMetro\Analysis;
 
+use ReflectionFunction;
 use ReflectionMethod;
 
 /**
@@ -31,26 +32,28 @@ class BaseAnalysis implements AnalysisInterface
      */
     public function addSample(string $name, int $size, callable $function): void
     {
-        $this->sample[$name] = [];
+        $reflectionFunction = new ReflectionFunction($function);
+        $returnType = $reflectionFunction->getReturnType();
 
-        $i = 0; $sampleSize = 0;
-        while ($i < $size) {
-            $this->isSettingUp = true;
-            $result = $function();
+        if ($returnType !== null)
+        {
+            $this->sample[$name] = [];
 
-            if ($result !== null)
-            {
-                $this->sample[$name][$i] = $result;
+            $i = 0; $sampleSize = 0;
+            while ($i < $size) {
+                $this->isSettingUp = true;
+
+                $this->sample[$name][$i] = $function();
                 $sampleSize++;
+
+                $i++;
             }
 
-            $i++;
+            $this->sizes[$name] = $sampleSize;
+            $this->samplesSize += $sampleSize;
+
+            $this->isSettingUp = false;
         }
-
-        $this->sizes[$name] = $sampleSize;
-        $this->samplesSize += $sampleSize;
-
-        $this->isSettingUp = false;
     }
 
     /**
