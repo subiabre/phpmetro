@@ -13,5 +13,7 @@ interface AnalysisInterface
 
     public function getSampleSizeOf(string $name): int;
 
+    public function getSampleSize(): int;
+
     public function getAllTests(): array;
 }
