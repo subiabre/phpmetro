@@ -68,6 +68,22 @@ class BaseAnalysis implements AnalysisInterface
     }
 
     /**
+     * Get the total size of samples after generation
+     * @param string $name
+     * @return int
+     */
+    public function getSampleSize(): int
+    {
+        $size = 0;
+        
+        foreach ($this->sizes as $key => $sample) {
+            $size += $sample;
+        }
+
+        return $size;
+    }
+
+    /**
      * Obtain an array of all the test methods
      * @return array
      */
