@@ -49,7 +49,7 @@ use SebastianBergmann\Version;
 use Symfony\Component\Console\Application;
 
 $version = new Version('X.Y.Z', __DIR__);
-$console = new Application('APIO', $version->getVersion());
+$console = new Application('PHPMetro', $version->getVersion());
 
 $console->addCommands((new CommandsLoader)->getCommands());
 
