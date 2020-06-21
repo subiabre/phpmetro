@@ -29,6 +29,13 @@ class ConfigTest extends TestCase
         $this->assertInstanceOf(\SimpleXMLElement::class, $xml);
     }
 
+    public function testGetsVerboseReturnsFalse()
+    {
+        $this->component->xml['verbose'] = 'non empty string';
+
+        $this->assertFalse($this->component->getVerbose());
+    }
+
     public function testGetsPHPMetroAttributes()
     {
         $verbose = $this->component->getVerbose();
