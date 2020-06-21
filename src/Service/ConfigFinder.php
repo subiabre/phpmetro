@@ -45,19 +45,6 @@ class ConfigFinder
             }
         }
 
-        if (!isset($location)) {
-            echo "PHPMetro config file not found at root location." . PHP_EOL;
-
-            $template = \file($this->rootDir . 'vendor/subiabre/phpmetro/phpmetro.xml');
-
-            \file_put_contents($this->rootDir . 'phpmetro.xml', $template);
-
-            echo "Copied the template config to the project root." . PHP_EOL;
-            echo "Please review and edit this file before running PHPMetro again." . PHP_EOL;
-
-            die(1);
-        }
-
         $this->configLocation = $location;
         return new Config($location);
     }
