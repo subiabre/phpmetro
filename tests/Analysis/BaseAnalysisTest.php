@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPMetro\Analysis;
+namespace PHPMetro\Tests\Analysis;
 
 use PHPUnit\Framework\TestCase;
 

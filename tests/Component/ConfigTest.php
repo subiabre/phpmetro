@@ -1,5 +1,7 @@
 <?php
 
+namespace PHPMetro\Tests\Component;
+
 use PHPMetro\Component\Config;
 use PHPUnit\Framework\TestCase;
 

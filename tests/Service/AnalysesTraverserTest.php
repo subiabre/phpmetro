@@ -1,5 +1,7 @@
 <?php
 
+namespace PHPMetro\Tests\Service;
+
 use PHPMetro\Service\AnalysesTraverser;
 use PHPUnit\Framework\TestCase;
 
