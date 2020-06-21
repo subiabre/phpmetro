@@ -38,24 +38,28 @@ PHPMetro is distributed on [packagist](https://packagist.org/packages/subiabre/p
 $ composer require --dev subiabre/phpmetro
 ```
 
-Once installed you'll get the phpmetro binary in your vendor folder. After installation you'll want to run `composer suggests subiabre/phpmetro` to see some more libraries you'll find useful when writing your analyses, as PHPMetro only contains a basic toolset for describing analysis cases with an specific workflow, and a runner to perform all our analyses based on a given configuration.
-
->**NOTE**: It's assummed you'll only need PHPMetro on development. Avoid possible vulnerabilities and save space by requiring it only on dev.
+Once installed you'll get the phpmetro binary in your bin folder, by default **vendor/bin**. After installation you'll want to run `composer suggests subiabre/phpmetro` to see some more libraries you'll find useful when writing your analyses, as PHPMetro only contains a basic toolset for describing analysis cases with an specific workflow, and a runner to perform all our analyses based on a given configuration.
 
 ## Configuration
-PHPMetro **needs** to have a `phpmetro.xml` file at the root of your project. This file will tell where to search for our Analysis classes and how to run them.
+PHPMetro **needs** to be fed a `.xml` config file on run. This file will tell where to search for our Analysis classes and how to run them.
 
 ### Getting the template configuration
-To easily create this file you can run the `phpmetro` binary and it will automatically detect the lack of config file and copy the template one for you:
+Easiest way is to copy to the root of your project the example config file at your vendor folder:
 
 ```console
-$ ./vendor/bin/phpmetro
+$ cp vendor/subiabre/phpmetro/phpmetro.xml phpmetro.xml
+```
+
+The binary will automatically search for any `phpmetro.xml` at the root folder and load it unless you specify a location, you can use that to use and run several different configurations and suites.
+
+```console
+$ ./vendor/bin/phpmetro run path/to/config.xml
 ```
 
 ### Configuring
 The *.xml* config file specifies general run directives for the PHPMetro binary as well as defines the analyses by suite groups.
 
-This file can be environment specific: `phpmetro.xml.local` will override `phpmetro.xml.dist` and this will override `phpmetro.xml`.
+The default file can be environment specific: `phpmetro.xml.local` will override `phpmetro.xml.dist` and this will override `phpmetro.xml`.
 
 1. [Configuring PHPMetro](#Configuring-PHPMetro)
 2. [Configuring Suites](#Configuring-Suites)
@@ -77,7 +81,7 @@ This file can be environment specific: `phpmetro.xml.local` will override `phpme
 
 The two attributes you see are required and they mean:
 - **bootstrap**: The classes mapper. Usually your composer autoload.
-- **verbose**: When set to "true" PHPMetro will display additional run info.
+- **verbose**: When set to "true" PHPMetro will display additional run info. Equals to running the command with the `-v` flag.
 
 There are no more run configurations. The runner will automatically fetch files from the suites you define. You can set more configurations per suite.
 
@@ -86,11 +90,11 @@ There are no more run configurations. The runner will automatically fetch files 
 <suites>
     <suite
         name="My Analysis Suite"
-        suffix="Suffix.php"
+        suffix="Suffix"
         ignore="false"
     >
-        <namespace>MyApp\Tests</namespace>
-        <directory>tests</directory>
+        <namespace>MyApp\Tests\Metro</namespace>
+        <directory>tests/Metro</directory>
     </suite>
 </suites>
 
@@ -98,16 +102,16 @@ There are no more run configurations. The runner will automatically fetch files 
 
 Suites must be inside the `<suites>` tag. Each suite accepts the following attributes:
 - **name**: The display name of the suite. Required.
-- **suffix**: Any combinations of letters that the analysis class files use as suffix. Optional. Defaults to "Analysis.php".
+- **suffix**: Any combinations of letters that the analysis class files use as suffix. Optional. Defaults to "Analysis".
 - **ignore**: When set to "true" it will indicate the runner to skip the execution of that suite. Optional. Defaults to "false".
 
->**NOTE**: Suffixes don't necessarily have to include the '.php' file extension. In fact the runner right-trims it from the suffix.
+>**NOTE**: Suffixes don't necessarily have to include the '.php' file extension. In fact the suite right-trims it from the suffix.
 
 Inside each suite there must be two more tags specificating:
 - **namespace**: The common namespace for the suite classes.
 - **directory**: The folder where all the classes are at.
 
-You must adhere to the [PSR-4](https://getcomposer.org/doc/04-schema.md#psr-4) specification when filenaming your Analyses. If you have an Analysis with the namespace `MyApp\Tests\Foo\BarAnalysis`, for this class to be properly identified by PHPMetro it will have to be located at `tests/Foo/BarAnalysis.php`.
+>**NOTE**: You must adhere to the [PSR-4](https://getcomposer.org/doc/04-schema.md#psr-4) specification when filenaming your Analyses. If you have an Analysis with the namespace `MyApp\Tests\Foo\BarAnalysis`, for this class to be properly identified by PHPMetro it will have to be located at `tests/Foo/BarAnalysis.php`.
 
 ## Usage
 Say you have your own random number generator, `MyApp\RandomNumber`, and want to see some statistics about it. PHPMetro is your package for that! Let's put it under "Analysis".
@@ -210,12 +214,14 @@ You can keep writing more Tests to calculate different things with your Samples.
 Finally, to run the Analyses just run the binary:
 
 ```console
-$ ./vendor/bin/phpmetro
+$ ./vendor/bin/phpmetro run
 ```
 
 Your Tests results should start appearing on your console screen nested by Analysis class (assuming you configured your `phpmetro.xml` file properly).
 
-![PHPMetro on Console](https://user-images.githubusercontent.com/61125897/75801800-0043e980-5d7c-11ea-85fd-ea5d405e7b50.png)
+![PHPMetro on console](https://user-images.githubusercontent.com/61125897/85226898-24ceda80-b3da-11ea-892f-72c6d84e8a2e.png)
+
+>You can check more usage examples inside `tests/Self` folder.
 
 ## Support
 You can support this project by contributing to open issues or creating pull requests to improve/fix existing code. Contributors are welcome.
