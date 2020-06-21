@@ -2,6 +2,7 @@
 
 namespace PHPMetro\Tests\Analysis;
 
+use PHPMetro\Analysis\BaseAnalysis;
 use PHPUnit\Framework\TestCase;
 
 class BaseAnalysisTest extends TestCase
