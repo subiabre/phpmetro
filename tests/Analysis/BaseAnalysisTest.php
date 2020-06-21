@@ -16,17 +16,15 @@ class BaseAnalysisTest extends TestCase
     public function testAddSampleCreatesSampleWithLength()
     {
         $this->case->addSample('Empty', 10, function() {
-            // functions that don't return values aren't added to the sample
+            // functions that don't return values don't create a sample
         });
-        $this->case->addSample('Filled', 10, function() {
+        $this->case->addSample('Filled', 10, function(): string {
             return '';
         });
 
-        $empty = $this->case->getSample('Empty');
         $filled = $this->case->getSample('Filled');
 
-        $this->assertIsArray($empty);
-        $this->assertEmpty($empty);
+        $this->assertArrayNotHasKey('Empty', $this->case->sample);
 
         $this->assertIsArray($filled);
         $this->assertEquals(10, \count($filled));
@@ -35,13 +33,13 @@ class BaseAnalysisTest extends TestCase
     public function testAddSampleSavesTheSampleLength()
     {
         $this->case->addSample('Empty', 10, function() {
-            // functions that don't return values aren't added to the sample
+            // functions that don't return values don't create a sample
         });
-        $this->case->addSample('Filled', 10, function() {
+        $this->case->addSample('Filled', 10, function(): string {
             return '';
         });
 
-        $this->assertSame(0, $this->case->getSampleSizeOf('Empty'));
+        $this->assertArrayNotHasKey('Empty', $this->case->sample);
         $this->assertSame(10, $this->case->getSampleSizeOf('Filled'));
         $this->assertSame(10, $this->case->getSampleSize());
     }

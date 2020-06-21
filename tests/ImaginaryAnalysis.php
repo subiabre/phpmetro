@@ -8,7 +8,11 @@ class ImaginaryAnalysis extends AnalysisCase
 {
     public function setUp(): void
     {
-        $this->addSample('Test', 100, function() {
+        $this->addSample('Null', 100, function() {
+            return 2;
+        });
+
+        $this->addSample('Test', 100, function(): int {
             return 2;
         });
     }
