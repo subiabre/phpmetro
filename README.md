@@ -142,7 +142,7 @@ A *Sample* is an special array inside the `AnalysisCase` class that contains sam
 ```php
 public function setUp(): void
 {
-    $this->addSample('RandomNumber', 100, function() {
+    $this->addSample('RandomNumber', 100, function(): int {
         $randomNumber = new RandomNumber();
 
         return $randomNumber->new();
@@ -154,9 +154,9 @@ To add data to a sample we use the `addSample` function, this function takes exa
 
 - **$name**: The sample name. String.
 - **$size**: The sample size in number of records, i.e the number of times to perform the function. Integer.
-- **$function**: The function to be run on each iteration of the sample. Needs to return a value or will be ignored from the sample. Callable.
+- **$function**: The function to be run on each iteration of the sample. Needs to specify a return a value. Callable.
 
->**NOTE**: Function calls that don't return a value will not be added to the Sample, resulting in a size lesser than the specified one.
+>**NOTE**: Function calls that don't specify a return a value will not generate a Sample.
 
 The `setUp` method is required by the `AnalysisInterface`. All analyses must implement this method with the purpose of being run before test methods in the Analysis.
 
