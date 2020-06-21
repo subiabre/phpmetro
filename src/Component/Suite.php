@@ -43,8 +43,10 @@ class Suite
      */
     public function getSuffix(): string
     {
-        if ($this->suite->attributes()->suffix !== NULL) {
-            return $this->suite->attributes()->suffix;
+        $suffix = $this->suite->attributes()->suffix;
+
+        if ($suffix !== NULL) {
+            return \rtrim($suffix, '.php');
         }
 
         return 'Analysis';
