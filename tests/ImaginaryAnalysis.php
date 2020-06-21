@@ -13,7 +13,7 @@ class ImaginaryAnalysis extends AnalysisCase
         });
     }
 
-    public function testTotalSum()
+    public function testTotalSum(): int
     {
         $sample = $this->getSample('Test');
         $total = 0;
@@ -23,5 +23,11 @@ class ImaginaryAnalysis extends AnalysisCase
         }
 
         return $total;
+    }
+
+    public function testNull()
+    {
+        // Tests that don't specify a return type are ignored
+        return 'testNull';
     }
 }
