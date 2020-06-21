@@ -39,18 +39,17 @@ class BaseAnalysis implements AnalysisInterface
         {
             $this->sample[$name] = [];
 
-            $i = 0; $sampleSize = 0;
+            $i = 0;
             while ($i < $size) {
                 $this->isSettingUp = true;
 
                 $this->sample[$name][$i] = $function();
-                $sampleSize++;
 
                 $i++;
             }
 
-            $this->sizes[$name] = $sampleSize;
-            $this->samplesSize += $sampleSize;
+            $this->sizes[$name] = $size;
+            $this->samplesSize += $size;
 
             $this->isSettingUp = false;
         }
