@@ -2,6 +2,8 @@
 
 namespace PHPMetro\Analysis;
 
+use ReflectionMethod;
+
 /**
  * Implements the non abstract methods in the AnalysisCase
  * @package PHPMetro
@@ -92,7 +94,10 @@ class BaseAnalysis implements AnalysisInterface
 
         foreach ($methods as $method)
         {
-            if (\preg_match('/test[A-Za-z09]*/', $method) && $this->{$method}() !== null) {
+            $reflectionMethod = new ReflectionMethod($this, $method);
+            $returnType = $reflectionMethod->getReturnType();
+
+            if (\preg_match('/test[A-Za-z09]*/', $method) && $returnType !== null) {
                 $tests[] = $method;
             }
         }
