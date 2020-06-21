@@ -8,7 +8,7 @@ class BenchmarkMetro extends AnalysisCase
 {
     public function setUp(): void
     {
-        $this->addSample('times', 10000, function() {
+        $this->addSample('times', 1000000, function() {
             $start = \microtime(true);
             
             \random_int(0, 100);
