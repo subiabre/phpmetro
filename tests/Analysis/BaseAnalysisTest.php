@@ -43,6 +43,7 @@ class BaseAnalysisTest extends TestCase
 
         $this->assertSame(0, $this->case->getSampleSizeOf('Empty'));
         $this->assertSame(10, $this->case->getSampleSizeOf('Filled'));
+        $this->assertSame(10, $this->case->getSampleSize());
     }
 
     public function testAddSampleFlagsSettingUp()
