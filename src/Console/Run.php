@@ -55,9 +55,10 @@ class Run extends Command
                 $do = new $class;
                 $do->setUp();
 
-                $className = \ltrim(\rtrim($class, $suite->getSuffix()), $suite->getNamespace());
+                $regexSuffix = \preg_replace( "/" . $suite->getSuffix() . "/", '', $class);
+                $trimNamespace = ltrim($regexSuffix, $suite->getNamespace());
 
-                $output->writeln(">> " . $className . ":");
+                $output->writeln(">> " . $trimNamespace . ":");
 
                 if ($output->isVerbose() || $config->getVerbose()) {
                     $samples = \count($do->sample);
