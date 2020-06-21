@@ -32,6 +32,19 @@ class BaseAnalysisTest extends TestCase
         $this->assertEquals(10, \count($filled));
     }
 
+    public function testAddSampleSavesTheSampleLength()
+    {
+        $this->case->addSample('Empty', 10, function() {
+            // functions that don't return values aren't added to the sample
+        });
+        $this->case->addSample('Filled', 10, function() {
+            return '';
+        });
+
+        $this->assertSame(0, $this->case->getSampleSizeOf('Empty'));
+        $this->assertSame(10, $this->case->getSampleSizeOf('Filled'));
+    }
+
     public function testAddSampleFlagsSettingUp()
     {
         $this->assertFalse($this->case->isSettingUp);
