@@ -19,7 +19,7 @@ class BenchmarkMetro extends AnalysisCase
         });
     }
 
-    public function testTotalTime()
+    public function testTotalTime(): int
     {
         $times = $this->getSample('times');
         $total = 0;
