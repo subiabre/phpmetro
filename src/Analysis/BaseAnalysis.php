@@ -17,6 +17,8 @@ class BaseAnalysis
 
     public $sample;
 
+    public $sizes;
+
     /**
      * Create a new sample with the given size and name
      * @param string $name Sample name
@@ -26,6 +28,7 @@ class BaseAnalysis
     public function addSample(string $name, int $size, callable $function): void
     {
         $this->sample[$name] = [];
+        $this->sizes[$name] = 0;
 
         $i = 0;
         while ($i < $size) {
@@ -35,6 +38,7 @@ class BaseAnalysis
             if ($result !== null)
             {
                 $this->sample[$name][$i] = $result;
+                $this->sizes[$name] += 1;
             }
 
             $i++;
@@ -51,6 +55,16 @@ class BaseAnalysis
     public function getSample(string $name): array
     {
         return $this->sample[$name];
+    }
+
+    /**
+     * Obtain the size of a sample after generation
+     * @param string $name
+     * @return int
+     */
+    public function getSampleSizeOf(string $name): int
+    {
+        return $this->sizes[$name];
     }
 
     /**
