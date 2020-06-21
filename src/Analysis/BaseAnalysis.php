@@ -7,7 +7,7 @@ namespace PHPMetro\Analysis;
  * @package PHPMetro
  * @author subiabrewd@gmail.com
  */
-class BaseAnalysis
+class BaseAnalysis implements AnalysisInterface
 {
     /**
      * Contains the state of the analysis set up
