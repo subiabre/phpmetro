@@ -23,6 +23,9 @@ class Run extends Command
         $this->addUsage('path/to/config.xml');
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     protected function execute(\Symfony\Component\Console\Input\InputInterface $input, \Symfony\Component\Console\Output\OutputInterface $output)
     {
         $config = $input->getArgument('config') ? new Config($input->getArgument('config')) : (new ConfigFinder)->load();
