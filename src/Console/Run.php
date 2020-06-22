@@ -37,6 +37,9 @@ class Run extends Command
         return $removeSuffix;
     }
     
+    /**
+     * @codeCoverageIgnore
+     */
     protected function execute(\Symfony\Component\Console\Input\InputInterface $input, \Symfony\Component\Console\Output\OutputInterface $output)
     {
         $config = $input->getArgument('config') ? new Config($input->getArgument('config')) : (new ConfigFinder)->load();
