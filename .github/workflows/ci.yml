@@ -20,6 +20,9 @@ jobs:
         coverage: xdebug    
         tools: php-cs-fixer, phpunit
 
+    - name: Composer install
+      run: composer install
+
     - name: PHPUnit tests
       run: composer run-script test
 
