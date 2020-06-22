@@ -23,9 +23,20 @@ class Run extends Command
         $this->addUsage('path/to/config.xml');
     }
 
-    /**
-     * @codeCoverageIgnore
-     */
+    public function cleanClassName($class, $suffix, $namespace)
+    {
+        $breakName = explode("\\", trim($class, "\\"));
+        $glueName = implode("\\\\", $breakName);
+
+        $breakNamespace = explode("\\", $namespace);
+        $glueNamespace = implode("\\\\\\\\", $breakNamespace);
+
+        $removeNamespace = \preg_replace("/$glueNamespace\\\\\\\\/", '', $glueName);
+        $removeSuffix = \preg_replace("/$suffix/", '', $removeNamespace);
+
+        return $removeSuffix;
+    }
+    
     protected function execute(\Symfony\Component\Console\Input\InputInterface $input, \Symfony\Component\Console\Output\OutputInterface $output)
     {
         $config = $input->getArgument('config') ? new Config($input->getArgument('config')) : (new ConfigFinder)->load();
@@ -58,10 +69,9 @@ class Run extends Command
                 $do = new $class;
                 $do->setUp();
 
-                $regexSuffix = \preg_replace( "/" . $suite->getSuffix() . "/", '', $class);
-                $trimNamespace = ltrim($regexSuffix, $suite->getNamespace());
+                $cleanName = $this->cleanClassName($class, $suite->getSuffix(), $suite->getNamespace());
 
-                $output->writeln(">> " . $trimNamespace . ":");
+                $output->writeln(">> " . $cleanName . ":");
 
                 if ($output->isVerbose() || $config->getVerbose()) {
                     $samples = \count($do->sample);
