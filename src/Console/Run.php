@@ -5,6 +5,7 @@ namespace PHPMetro\Console;
 use PHPMetro\Component\Config;
 use PHPMetro\Service\AnalysesTraverser;
 use PHPMetro\Service\ConfigFinder;
+use SebastianBergmann\Version;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -43,6 +44,9 @@ class Run extends Command
     protected function execute(\Symfony\Component\Console\Input\InputInterface $input, \Symfony\Component\Console\Output\OutputInterface $output)
     {
         $config = $input->getArgument('config') ? new Config($input->getArgument('config')) : (new ConfigFinder)->load();
+        $version = (new Version('X.Y.Z', \dirname(__DIR__, 2)))->getVersion();
+
+        $output->writeln("PHPMetro $version by Facundo Daniel Subiabre");
 
         if ($output->isVerbose() || $config->getVerbose())
         {
@@ -104,7 +108,7 @@ class Run extends Command
                     }
     
                     $output->writeln('');
-                    $output->writeln("Time: " . $runTime . "s, Memory: " . $memory . " MB");
+                    $output->writeln("<bg=green>Time: " . $runTime . "s, Memory: " . $memory . " MB</>");
                 }
 
             }
