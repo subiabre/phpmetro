@@ -23,7 +23,7 @@ class ConfigFinder
     }
 
     /**
-     * Load the configuration file into an object
+     * Autoload the configuration file at the root into an object
      * @return object
      */
     public function load(): Config
