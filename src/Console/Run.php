@@ -2,7 +2,6 @@
 
 namespace PHPMetro\Console;
 
-use PHPMetro\Component\Config;
 use PHPMetro\Service\AnalysesTraverser;
 use PHPMetro\Service\ConfigFinder;
 use SebastianBergmann\Version;
@@ -74,8 +73,7 @@ class Run extends Command
 
             $output->writeln("> " . $suite->getName());
 
-            foreach ($analyses as $file => $class) {
-                include $file;
+            foreach ($analyses as $class) {
 
                 $do = new $class;
                 $do->setUp();
