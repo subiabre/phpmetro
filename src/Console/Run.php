@@ -83,8 +83,8 @@ class Run extends Command
                 $output->writeln(">> " . $cleanName . ":");
 
                 if ($output->isVerbose() || $config->getVerbose()) {
-                    $samples = \count($do->sample);
-                    $records = $do->getSampleSize();
+                    $samples = \number_format(\count($do->sample), 0, '.', ',');
+                    $records = \number_format($do->getSampleSize(), 0, '.', ',');
 
                     $output->writeln(">> " . $samples . " samples with " . $records . " records.");
                 }
