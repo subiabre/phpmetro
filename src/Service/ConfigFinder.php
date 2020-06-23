@@ -24,7 +24,7 @@ class ConfigFinder
 
     /**
      * Autoload the configuration file at the root into an object
-     * @return object
+     * @return Config
      */
     public function load(): Config
     {
@@ -44,6 +44,22 @@ class ConfigFinder
                 break;
             }
         }
+
+        $this->configLocation = $location;
+        return new Config($location);
+    }
+
+    /**
+     * Load the configuration file at the given location
+     * @param string $path Path to configuration file
+     * @return Config|null Returns null if no config file was found
+     */
+    public function loadFrom(string $path): ?Config
+    {
+        $location = $path;
+        if (\is_dir($path)) $location = \rtrim($path, '/\/\\') . '/phpmetro.xml';
+
+        if (!\file_exists($location)) return null;
 
         $this->configLocation = $location;
         return new Config($location);
