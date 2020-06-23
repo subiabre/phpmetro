@@ -48,21 +48,29 @@ class BaseAnalysis implements AnalysisInterface
     /**
      * Obtain a sample by name
      * @param string $name
-     * @return array
+     * @return array|null Returns null if the requested sample does not exist
      */
-    public function getSample(string $name): array
+    public function getSample(string $name): ?array
     {
-        return $this->sample[$name];
+        if (\array_key_exists($name, $this->sample)) {
+            return $this->sample[$name];
+        }
+
+        return null;
     }
 
     /**
      * Obtain the size of a sample after generation
      * @param string $name
-     * @return int
+     * @return int|null Returns null if the requested sample does not exist
      */
-    public function getSampleSizeOf(string $name): int
+    public function getSampleSizeOf(string $name): ?int
     {
-        return $this->sizes[$name];
+        if (\array_key_exists($name, $this->sample)) {
+            return $this->sizes[$name];
+        }
+
+        return null;
     }
 
     /**
