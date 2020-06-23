@@ -14,12 +14,27 @@ class ConfigFinderTest extends TestCase
         $this->finder = new ConfigFinder();
     }
 
-    public function testFindsConfiguration()
+    public function testFindsConfigurationAtRoot()
     {
         $config = $this->finder->load();
 
         $this->assertIsObject($config);
         $this->assertInstanceOf(\PHPMetro\Component\Config::class, $config);
+    }
+
+    public function testFindsConfigurationAtFolder()
+    {
+        $config = $this->finder->loadFrom(\dirname(__DIR__, 1));
+
+        $this->assertIsObject($config);
+        $this->assertInstanceOf(\PHPMetro\Component\Config::class, $config);
+    }
+
+    public function testReturnsNullOnNoConfigFound()
+    {
+        $config = $this->finder->loadFrom(__DIR__);
+
+        $this->assertNull($config);
     }
 
     public function testGetPath()
