@@ -43,10 +43,14 @@ class Run extends Command
      */
     protected function execute(\Symfony\Component\Console\Input\InputInterface $input, \Symfony\Component\Console\Output\OutputInterface $output)
     {
-        $config = $input->getArgument('config') ? new Config($input->getArgument('config')) : (new ConfigFinder)->load();
         $version = (new Version('X.Y.Z', \dirname(__DIR__, 2)))->getVersion();
 
         $output->writeln("PHPMetro $version by Facundo Daniel Subiabre");
+
+        $configFinder = new ConfigFinder;
+        $configLocation = $input->getArgument('config') ?: $configFinder->rootDir;
+
+        $config = $configFinder->loadFrom($configLocation);
 
         if ($output->isVerbose() || $config->getVerbose())
         {
