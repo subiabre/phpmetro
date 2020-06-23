@@ -19,6 +19,7 @@ class ConfigTest extends TestCase
     public function testGetsLocation()
     {
         $this->assertIsString($this->component->getLocation());
+        $this->assertFileExists($this->component->getLocation());
     }
 
     public function testXmlIsSimpleXMLElement()
