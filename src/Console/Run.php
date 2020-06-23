@@ -73,7 +73,8 @@ class Run extends Command
 
             $output->writeln("> " . $suite->getName());
 
-            foreach ($analyses as $class) {
+            foreach ($analyses as $file => $class) {
+                include $file;
 
                 $do = new $class;
                 $do->setUp();
