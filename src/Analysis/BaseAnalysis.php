@@ -31,15 +31,15 @@ class BaseAnalysis implements AnalysisInterface
 
         if ($returnType !== null)
         {
-            $this->sample[$name] = [];
+            $sample = [];
 
             $i = 0;
             while ($i < $size) {
-                $this->sample[$name][$i] = $function();
-
+                $sample[$i] = \call_user_func($function);
                 $i++;
             }
 
+            $this->sample[$name] = $sample;
             $this->sizes[$name] = $size;
             $this->samplesSize += $size;
         }
