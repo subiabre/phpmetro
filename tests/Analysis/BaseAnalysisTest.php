@@ -45,17 +45,6 @@ class BaseAnalysisTest extends TestCase
         $this->assertSame(10, $this->case->getSampleSize());
     }
 
-    public function testAddSampleFlagsSettingUp()
-    {
-        $this->assertFalse($this->case->isSettingUp);
-
-        $this->case->addSample('Test', 10, function(){
-            $this->assertTrue($this->case->isSettingUp);
-        });
-
-        $this->assertFalse($this->case->isSettingUp);
-    }
-
     public function testGetsAllTestsAsAnArray()
     {
         $tests = $this->case->getAllTests();

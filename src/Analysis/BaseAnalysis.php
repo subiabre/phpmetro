@@ -12,12 +12,6 @@ use ReflectionMethod;
  */
 class BaseAnalysis implements AnalysisInterface
 {
-    /**
-     * Contains the state of the analysis set up
-     * @var bool
-     */
-    public $isSettingUp = false;
-
     public $sample;
 
     public $samplesSize = 0;
@@ -41,8 +35,6 @@ class BaseAnalysis implements AnalysisInterface
 
             $i = 0;
             while ($i < $size) {
-                $this->isSettingUp = true;
-
                 $this->sample[$name][$i] = $function();
 
                 $i++;
@@ -50,8 +42,6 @@ class BaseAnalysis implements AnalysisInterface
 
             $this->sizes[$name] = $size;
             $this->samplesSize += $size;
-
-            $this->isSettingUp = false;
         }
     }
 

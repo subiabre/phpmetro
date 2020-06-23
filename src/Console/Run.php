@@ -87,14 +87,12 @@ class Run extends Command
                     $output->writeln(">> " . $samples . " samples with " . $records . " records.");
                 }
 
-                if (!$do->isSettingUp) {
-                    $tests = $do->getAllTests();
+                $tests = $do->getAllTests();
 
-                    foreach ($tests as $test) {
-                        $testName = \ltrim($test, 'test');
+                foreach ($tests as $test) {
+                    $testName = \ltrim($test, 'test');
 
-                        $output->writeln(">>> " . $testName . ": " . (string) $do->{$test}());
-                    }
+                    $output->writeln(">>> " . $testName . ": " . (string) $do->{$test}());
                 }
 
                 if ($output->isVerbose() || $config->getVerbose()) {
