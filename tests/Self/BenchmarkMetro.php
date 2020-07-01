@@ -15,18 +15,18 @@ class BenchmarkMetro extends AnalysisCase
 
             $end = \microtime(true);
 
-            return [$start, $end];
+            return ['start' => $start, 'end' => $end];
         });
     }
 
-    public function testTotalTime(): int
+    public function testTotalTimeInSeconds(): float
     {
         $times = $this->getSample('times');
         $total = 0;
 
         foreach ($times as $time)
         {
-            $duration = $time[1] - $time[0];
+            $duration = $time['end'] - $time['start'];
             $total += $duration;
         }
 
