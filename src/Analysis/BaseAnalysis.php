@@ -12,11 +12,11 @@ use ReflectionMethod;
  */
 class BaseAnalysis implements AnalysisInterface
 {
-    public $sample;
+    public $sample = [];
+
+    public $sizes = [];
 
     public $samplesSize = 0;
-
-    public $sizes;
 
     /**
      * Create a new sample with the given size and name
@@ -31,17 +31,15 @@ class BaseAnalysis implements AnalysisInterface
 
         if ($returnType !== null)
         {
-            $sample = [];
-
+            $this->samplesSize += $size;
+            $this->sizes[$name] = $size;
+            
             $i = 0;
             while ($i < $size) {
-                $sample[$i] = \call_user_func($function);
+                $this->sample[$name][$i] = \call_user_func($function);
+
                 $i++;
             }
-
-            $this->sample[$name] = $sample;
-            $this->sizes[$name] = $size;
-            $this->samplesSize += $size;
         }
     }
 
