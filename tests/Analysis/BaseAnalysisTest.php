@@ -52,4 +52,13 @@ class BaseAnalysisTest extends TestCase
         $this->assertIsArray($tests);
         $this->assertEmpty($tests);
     }
+
+    public function testGetSampleReturnsNullOnNoSample()
+    {
+        $sample = $this->case->getSample('unexisting');
+        $size = $this->case->getSampleSizeOf('unexisting');
+
+        $this->assertNull($sample);
+        $this->assertNull($size);
+    }
 }
