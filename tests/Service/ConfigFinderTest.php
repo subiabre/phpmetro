@@ -2,6 +2,7 @@
 
 namespace PHPMetro\Tests\Service;
 
+use Exception;
 use PHPMetro\Service\ConfigFinder;
 use PHPUnit\Framework\TestCase;
 
@@ -30,11 +31,11 @@ class ConfigFinderTest extends TestCase
         $this->assertInstanceOf(\PHPMetro\Component\Config::class, $config);
     }
 
-    public function testReturnsNullOnNoConfigFound()
+    public function testThrowsExceptionNoConfigFound()
     {
-        $config = $this->finder->loadFrom(__DIR__);
+        $this->expectException(Exception::class);
 
-        $this->assertNull($config);
+        $config = $this->finder->loadFrom(__DIR__);
     }
 
     public function testGetPath()

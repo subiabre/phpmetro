@@ -59,7 +59,10 @@ class ConfigFinder
         $location = $path;
         if (\is_dir($path)) $location = \rtrim($path, '/\/\\') . '/phpmetro.xml';
 
-        if (!\file_exists($location)) return null;
+        if (!\file_exists($location)) {
+            throw new Exception("The configuration file at '$location' could not be retrieved.", 1);
+            return null;
+        }
 
         $this->configLocation = $location;
         return new Config($location);
