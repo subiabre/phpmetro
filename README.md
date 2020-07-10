@@ -54,7 +54,7 @@ $ cp vendor/subiabre/phpmetro/phpmetro.xml phpmetro.xml
 The binary will automatically search for any `phpmetro.xml` at the root folder and load it unless you specify a location, you can use that to use and run several different configurations and suites.
 
 ```console
-$ ./vendor/bin/phpmetro run path/to/config.xml
+$ ./vendor/bin/phpmetro path/to/config.xml
 ```
 
 ### Configuring
@@ -217,7 +217,7 @@ You can keep writing more Tests to calculate different things with your Samples.
 Finally, to run the Analyses just run the binary:
 
 ```console
-$ ./vendor/bin/phpmetro run
+$ ./vendor/bin/phpmetro
 ```
 
 Your Tests results should start appearing on your console screen.
