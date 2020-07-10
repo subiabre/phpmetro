@@ -45,6 +45,7 @@ class Run extends Command
         $version = (new Version('X.Y.Z', \dirname(__DIR__, 2)))->getVersion();
 
         $output->writeln("PHPMetro $version by Facundo Daniel Subiabre");
+        $output->writeln('');
 
         $configFinder = new ConfigFinder;
         $configLocation = $input->getArgument('config') ?: $configFinder->rootDir;
@@ -54,6 +55,7 @@ class Run extends Command
         if ($output->isVerbose() || $config->getVerbose())
         {
             $output->writeln("Configuration: " . $config->getLocation());
+            $output->writeln("Runtime: " . \phpversion());
             $output->writeln('');
 
             $startTime = \microtime(true);

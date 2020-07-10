@@ -14,11 +14,6 @@ class ImaginaryAnalysisTest extends TestCase
         $this->analysis->setUp();
     }
 
-    public function testSetUpIgnoresSamplesWithNoReturnType()
-    {
-        $this->assertArrayNotHasKey('Null', $this->analysis->sample);
-    }
-
     public function testGetAllTests()
     {
         $tests = $this->analysis->getAllTests();

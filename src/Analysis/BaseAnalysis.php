@@ -29,9 +29,13 @@ class BaseAnalysis implements AnalysisInterface
         $reflectionFunction = new ReflectionFunction($function);
         $returnType = $reflectionFunction->getReturnType();
 
-        if ($returnType !== null)
+        if ($returnType === null)
         {
-            $this->samplesSize += $size;
+            throw new \Exception("Sampling function must specify a return value.", 1);
+            return;
+        }
+
+        $this->samplesSize += $size;
             $this->sizes[$name] = $size;
             
             $i = 0;
@@ -40,7 +44,6 @@ class BaseAnalysis implements AnalysisInterface
 
                 $i++;
             }
-        }
     }
 
     /**
