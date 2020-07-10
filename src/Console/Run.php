@@ -55,7 +55,7 @@ class Run extends Command
         if ($output->isVerbose() || $config->getVerbose())
         {
             $output->writeln("Configuration: " . $config->getLocation());
-            $output->writeln("Runtime: " . \phpversion());
+            $output->writeln("Runtime: PHP " . \phpversion());
             $output->writeln('');
 
             $startTime = \microtime(true);
