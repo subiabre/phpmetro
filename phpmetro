@@ -52,5 +52,6 @@ $version = new Version('X.Y.Z', __DIR__);
 $console = new Application('PHPMetro', $version->getVersion());
 
 $console->addCommands((new CommandsLoader)->getCommands());
+$console->setDefaultCommand('run', true);
 
 $console->run();
