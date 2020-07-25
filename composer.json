@@ -15,7 +15,8 @@
     },
     "require": {
         "symfony/console": "^5.1",
-        "sebastian/version": "2.0.1"
+        "sebastian/version": "2.0.1",
+        "amphp/parallel": "^1.4"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.5"
