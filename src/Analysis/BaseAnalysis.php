@@ -23,7 +23,7 @@ class BaseAnalysis implements AnalysisInterface
 
     public $samplesSize = 0;
 
-    const POOL_MAX_SIZE = 4096;
+    const POOL_MAX_SIZE = 65536;
 
     /**
      * Create a new sample with the given size and name
@@ -51,7 +51,7 @@ class BaseAnalysis implements AnalysisInterface
 
                 $i = 0;
                 while ($i < $poolMax) {
-                    $pool[] = \call_user_func($function);
+                    $pool[] = $function();
 
                     $i++;
                 }
