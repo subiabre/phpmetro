@@ -2,8 +2,13 @@
 
 namespace PHPMetro\Analysis;
 
+use Opis\Closure\SerializableClosure;
 use ReflectionFunction;
 use ReflectionMethod;
+
+use function Amp\Parallel\Worker\enqueueCallable;
+use function Amp\Promise\all;
+use function Amp\Promise\wait;
 
 /**
  * Implements the non abstract methods in the AnalysisCase
@@ -17,6 +22,8 @@ class BaseAnalysis implements AnalysisInterface
     public $sizes = [];
 
     public $samplesSize = 0;
+
+    const POOL_MAX_SIZE = 4096;
 
     /**
      * Create a new sample with the given size and name
@@ -35,15 +42,57 @@ class BaseAnalysis implements AnalysisInterface
             return;
         }
 
-        $this->samplesSize += $size;
-            $this->sizes[$name] = $size;
-            
-            $i = 0;
-            while ($i < $size) {
-                $this->sample[$name][$i] = \call_user_func($function);
+        $pools = [];
+        $poolsTotal = $this->getPools($size);
 
-                $i++;
+        foreach ($poolsTotal as $key => $poolMax) {
+            $pools[] = enqueueCallable(new SerializableClosure(function () use ($function, $poolMax) {
+                $pool = [];
+
+                $i = 0;
+                while ($i < $poolMax) {
+                    $pool[] = \call_user_func($function);
+
+                    $i++;
+                }
+
+                return $pool;
+            }));
+        }
+
+        $data = wait(all($pools));
+        $sample = [];
+
+        foreach ($data as $pool) {
+            $sample = \array_merge($sample, $pool);
+        }
+
+        $sampleSize = \count($sample);
+
+        $this->samplesSize += $sampleSize;
+        $this->sizes[$name] = $sampleSize;
+        $this->sample[$name] = $sample;
+    }
+
+    /**
+     * Fill as many pools as necessary to drain the given water
+     * @param int $size
+     */
+    private function getPools(int $water): array
+    {
+        $pools = [];
+
+        while ($water > 0) {
+            if ($water > self::POOL_MAX_SIZE) {
+                $pools[] = self::POOL_MAX_SIZE;
+                $water -= self::POOL_MAX_SIZE;
             }
+
+            $pools[] = $water;
+            $water = 0;
+        }
+
+        return $pools;
     }
 
     /**
