@@ -1,5 +1,7 @@
-# PHPMetro
+# PHPMetro (parallel)
 Streamlined statistical sampling and analysis of results.
+
+**This branch contains an experimental version of PHPMetro.** Target is to be able to sample big loads of data in parallel behaviour to reduce generation time.
 
 ![PHPMetro logo](https://user-images.githubusercontent.com/61125897/75801933-35e8d280-5d7c-11ea-9eab-8f788f97a0d9.png)
 
