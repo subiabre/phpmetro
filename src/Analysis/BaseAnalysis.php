@@ -86,6 +86,7 @@ class BaseAnalysis implements AnalysisInterface
             if ($water > self::POOL_MAX_SIZE) {
                 $pools[] = self::POOL_MAX_SIZE;
                 $water -= self::POOL_MAX_SIZE;
+                continue;
             }
 
             $pools[] = $water;
