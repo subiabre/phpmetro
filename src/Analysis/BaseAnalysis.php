@@ -2,11 +2,13 @@
 
 namespace PHPMetro\Analysis;
 
+use Closure;
 use Opis\Closure\SerializableClosure;
 use ReflectionFunction;
 use ReflectionMethod;
 
 use function Amp\Parallel\Worker\enqueueCallable;
+use function Amp\ParallelFunctions\parallelMap;
 use function Amp\Promise\all;
 use function Amp\Promise\wait;
 
@@ -42,28 +44,24 @@ class BaseAnalysis implements AnalysisInterface
             return;
         }
 
-        $pools = [];
-        $poolsTotal = $this->getPools($size);
-
-        foreach ($poolsTotal as $key => $poolMax) {
-            $pools[] = enqueueCallable(new SerializableClosure(function () use ($function, $poolMax) {
+        $sample = [];
+        $pools = wait(parallelMap(
+            $this->getPools($size),
+            function ($size) use ($function) {
                 $pool = [];
 
                 $i = 0;
-                while ($i < $poolMax) {
+                while ($i < $size) {
                     $pool[] = $function();
 
                     $i++;
                 }
 
                 return $pool;
-            }));
-        }
+            }
+        ));
 
-        $data = wait(all($pools));
-        $sample = [];
-
-        foreach ($data as $pool) {
+        foreach ($pools as $pool) {
             $sample = \array_merge($sample, $pool);
         }
 
