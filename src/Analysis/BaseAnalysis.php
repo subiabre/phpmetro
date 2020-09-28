@@ -3,13 +3,10 @@
 namespace PHPMetro\Analysis;
 
 use Closure;
-use Opis\Closure\SerializableClosure;
 use ReflectionFunction;
 use ReflectionMethod;
 
-use function Amp\Parallel\Worker\enqueueCallable;
 use function Amp\ParallelFunctions\parallelMap;
-use function Amp\Promise\all;
 use function Amp\Promise\wait;
 
 /**
@@ -33,7 +30,7 @@ class BaseAnalysis implements AnalysisInterface
      * @param int $size Sample size
      * @param callable $function Function to perform for the sample
      */
-    public function addSample(string $name, int $size, callable $function): void
+    public function addSample(string $name, int $size, Closure $function): void
     {
         $reflectionFunction = new ReflectionFunction($function);
         $returnType = $reflectionFunction->getReturnType();

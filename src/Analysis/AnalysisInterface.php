@@ -2,12 +2,14 @@
 
 namespace PHPMetro\Analysis;
 
+use Closure;
+
 /**
  * The Analysis Interface
  */
 interface AnalysisInterface
 {
-    public function addSample(string $name, int $size, callable $function): void;
+    public function addSample(string $name, int $size, Closure $function): void;
 
     public function getSample(string $name): ?array;
 
