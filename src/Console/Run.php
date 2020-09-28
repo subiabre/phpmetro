@@ -4,6 +4,7 @@ namespace PHPMetro\Console;
 
 use PHPMetro\Service\AnalysesTraverser;
 use PHPMetro\Service\ConfigFinder;
+use PHPMetro\Analysis\BaseAnalysis;
 use SebastianBergmann\Version;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -78,6 +79,7 @@ class Run extends Command
             foreach ($analyses as $file => $class) {
                 include $file;
 
+                /** @var BaseAnalysis */
                 $do = new $class;
                 $do->setUp();
 
@@ -89,7 +91,14 @@ class Run extends Command
                     $samples = \number_format(\count($do->sample), 0, '.', ',');
                     $records = \number_format($do->getSampleSize(), 0, '.', ',');
 
-                    $output->writeln(">> " . $samples . " samples with " . $records . " records.");
+                    $output->writeln(">> " . $samples . " samples and " . $records . " records.");
+                    
+                    foreach ($do->sample as $sample => $values) {
+                        $records = \number_format(\count($values));
+                        $pools = \number_format(\count($do->getPools(\count($values))));
+
+                        $output->writeln(">> " . $sample . ": " . $records . " records. " . $pools . " pools.");
+                    }
                 }
 
                 $tests = $do->getAllTests();
