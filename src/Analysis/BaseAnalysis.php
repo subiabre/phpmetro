@@ -73,7 +73,7 @@ class BaseAnalysis implements AnalysisInterface
      * Fill as many pools as necessary to drain the given water
      * @param int $size
      */
-    private function getPools(int $water): array
+    public function getPools(int $water): array
     {
         $pools = [];
 
