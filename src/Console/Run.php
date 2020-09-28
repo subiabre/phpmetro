@@ -94,8 +94,9 @@ class Run extends Command
                     $output->writeln(">> " . $samples . " samples and " . $records . " records.");
                     
                     foreach ($do->sample as $sample => $values) {
-                        $records = \number_format(\count($values));
-                        $pools = \number_format(\count($do->getPools(\count($values))));
+                        $size = $do->getSampleSizeOf($sample);
+                        $records = \number_format($size);
+                        $pools = \number_format(\count($do->getPools($size)));
 
                         $output->writeln(">> " . $sample . ": " . $records . " records. " . $pools . " pools.");
                     }
