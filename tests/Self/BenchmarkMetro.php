@@ -10,8 +10,8 @@ class BenchmarkMetro extends AnalysisCase
     {
         $this->addSample('times', 1000000, function(): array {
             $start = \microtime(true);
-            
-            \random_int(0, 100);
+
+            usleep(1);
 
             $end = \microtime(true);
 
@@ -31,5 +31,12 @@ class BenchmarkMetro extends AnalysisCase
         }
 
         return $total;
+    }
+
+    public function testSampleSizeIsActual(): bool
+    {
+        $times = $this->getSample('times');
+
+        return \count($times) == $this->getSampleSizeOf('times');
     }
 }
