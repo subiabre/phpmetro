@@ -44,7 +44,7 @@ class Run extends Command
     {
         $version = (new Version('X.Y.Z', \dirname(__DIR__, 2)))->getVersion();
 
-        $output->writeln("PHPMetro $version by Facundo Daniel Subiabre");
+        $output->writeln("PHPMetro $version");
         $output->writeln('');
 
         $configFinder = new ConfigFinder;
