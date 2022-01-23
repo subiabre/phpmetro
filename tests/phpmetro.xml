@@ -7,10 +7,7 @@
 
     http://gitlab.com/subiabre/phpmetro#configuration
  -->
-<phpmetro
-    bootstrap="vendor/autoload.php"
-    verbose="true" 
->
+<phpmetro verbose="true">
     <!--
         Suites are Analysis groups that contain similar analyses
         You can add as many suites as you want inside the <suites> tag

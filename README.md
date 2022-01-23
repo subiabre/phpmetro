@@ -70,7 +70,6 @@ The default file can be environment specific: `phpmetro.xml.local` will override
 <?xml version="1.0" encoding="UTF-8"?>
 
 <phpmetro
-    bootstrap="vendor/autoload.php"
     verbose="true" 
 >
 
@@ -81,7 +80,6 @@ The default file can be environment specific: `phpmetro.xml.local` will override
 ```
 
 The two attributes you see are required and they mean:
-- **bootstrap**: The classes mapper. Usually your composer autoload.
 - **verbose**: When set to "true" PHPMetro will display additional run info. Equals to running the command with the `-v` flag.
 
 There are no more run configurations. The runner will automatically fetch files from the suites you define. You can set more configurations per suite.

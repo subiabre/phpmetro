@@ -52,15 +52,6 @@ class Config
     }
 
     /**
-     * Get the "bootstrap" attribute
-     * @return string
-     */
-    public function getBootstrap(): string
-    {
-        return $this->xml->attributes()->bootstrap;
-    }
-
-    /**
      * Get the suites as an array
      * @return array
      */
