@@ -4,7 +4,7 @@ namespace PHPMetro\Tests\Self;
 
 use PHPMetro\Analysis\AnalysisCase;
 
-class BenchmarkMetro extends AnalysisCase
+class BenchmarkAnalysis extends AnalysisCase
 {
     public function setUp(): void
     {

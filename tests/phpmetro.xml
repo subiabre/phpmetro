@@ -24,7 +24,7 @@
         -->
         <suite 
             name="PHPMetro self analysis suite"
-            suffix="Metro.php"
+            suffix="Analysis"
             ignore="false"
         >
             <!--
